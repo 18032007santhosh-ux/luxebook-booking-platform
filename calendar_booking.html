@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LuxeBook | Calendar Booking Experience</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#735c00",
+                        "surface-container-high": "#e6e9e6",
+                        "tertiary-fixed": "#ffe088",
+                        "surface-dim": "#d8dbd8",
+                        "surface-container": "#eceeeb",
+                        "on-surface": "#191c1b",
+                        "on-secondary-fixed-variant": "#792b46",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#e9c349",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#ffd9e1",
+                        "on-secondary-container": "#7a2b46",
+                        "surface-bright": "#f7faf7",
+                        "surface-container-highest": "#e0e3e0",
+                        "on-primary-fixed": "#002019",
+                        "secondary-container": "#ff97b4",
+                        "surface-tint": "#206a58",
+                        "primary-fixed-dim": "#8ed4bf",
+                        "primary": "#004537",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eff1ee",
+                        "tertiary-container": "#cca730",
+                        "on-primary": "#ffffff",
+                        "background": "#f7faf7",
+                        "surface-container-low": "#f2f4f1",
+                        "secondary": "#97425d",
+                        "outline": "#6f7975",
+                        "inverse-surface": "#2d312f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "on-primary-container": "#8fd5bf",
+                        "on-background": "#191c1b",
+                        "surface": "#f7faf7",
+                        "secondary-fixed-dim": "#ffb1c5",
+                        "surface-variant": "#e0e3e0",
+                        "primary-container": "#0f5e4d",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#8ed4bf",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#aaf1da",
+                        "outline-variant": "#bfc9c4",
+                        "on-primary-fixed-variant": "#005141",
+                        "on-surface-variant": "#3f4945",
+                        "on-tertiary-container": "#4f3d00",
+                        "on-secondary-fixed": "#3f001b",
+                        "warm-ivory": "#F8F5F0",
+                        "rich-gold": "#D4AF37",
+                        "emerald-green": "#0F5E4D"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "24px",
+                        "3xl": "28px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "48px",
+                        "container-max": "1440px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "xl": "80px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "md": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Playfair Display"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Playfair Display"],
+                        "label-caps": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["48px", {"lineHeight": "56px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #F8F5F0;
+            color: #191C1B;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 30px 60px -12px rgba(30, 30, 30, 0.05);
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+        }
+        .active-ring {
+            box-shadow: 0 0 0 2px #D4AF37;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="font-body-md min-h-screen overflow-hidden flex flex-col">
+<!-- Top Navigation / Progress Header -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-secondary/20 shadow-xl shadow-on-background/5">
+<div class="flex justify-between items-center px-lg py-md max-w-container-max mx-auto h-24">
+<div class="flex flex-col">
+<a href="index.html" class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight cursor-pointer">LuxeBook</a>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Excellence in Every Detail</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center space-x-8">
+<div class="flex items-center gap-2 text-on-surface-variant/40">
+<span class="w-8 h-8 rounded-full border border-current flex items-center justify-center font-label-caps text-[10px]">01</span>
+<span class="font-label-caps uppercase text-[11px]">Service</span>
+</div>
+<div class="w-8 h-[1px] bg-secondary/20"></div>
+<div class="flex items-center gap-2 text-on-surface-variant/40">
+<span class="w-8 h-8 rounded-full border border-current flex items-center justify-center font-label-caps text-[10px]">02</span>
+<span class="font-label-caps uppercase text-[11px]">Expert</span>
+</div>
+<div class="w-8 h-[1px] bg-secondary/20"></div>
+<div class="flex items-center gap-2 text-primary font-semibold">
+<span class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center font-label-caps text-[10px]">03</span>
+<span class="font-label-caps uppercase text-[11px]">Date &amp; Time</span>
+</div>
+<div class="w-8 h-[1px] bg-secondary/20"></div>
+<div class="flex items-center gap-2 text-on-surface-variant/40">
+<span class="w-8 h-8 rounded-full border border-current flex items-center justify-center font-label-caps text-[10px]">04</span>
+<span class="font-label-caps uppercase text-[11px]">Confirm</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">account_circle</button>
+</div>
+</div>
+</header>
+<!-- Main Booking Canvas -->
+<main class="flex-1 pt-24 pb-24 max-w-container-max mx-auto w-full grid grid-cols-12 gap-gutter px-lg mt-md overflow-hidden">
+<!-- Left Sidebar: Summary -->
+<aside class="col-span-3 h-full flex flex-col gap-md animate-fade-in" style="animation-delay: 0.1s;">
+<div class="glass-card rounded-2xl p-md flex flex-col gap-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase border-b border-secondary/10 pb-2">Selected Journey</h3>
+<div class="space-y-4">
+<div class="relative group">
+<img alt="Luxury Spa Treatment" class="w-full h-40 object-cover rounded-xl shadow-md group-hover:scale-[1.02] transition-transform duration-500" data-alt="A serene luxury spa environment featuring a wooden table with essential oils and smooth basalt massage stones. The lighting is soft and golden, illuminating a tranquil treatment room with warm ivory walls and minimalist decor. High-end editorial style photography emphasizing peacefulness and exclusive wellness services." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOWh7_VKVLyUvT_S78y_aGkMlVojn-vPi074Ob2qGcWFbiaqH92F783QeP-Lo3TjKnWaTNiB5BgT3JYUTqkNffEU7wMNMxuACrQ-awlG0Tz7zIKeaSvgc48Y8CGVFxuKw-H0OWFYCE9HwcC0NIdKMayWOkO8W6_8H2bJ_S2MpNRDO1A2ugxD5KL16JcYjOgA33hl1uuL2Xnn7LSXN78OZT_-fSnhc2LClLBujMH7gNE7oS58q-34bLvmWX5Hq6Epi9DJmgq_K34TY"/>
+<div class="absolute top-2 right-2 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full shadow-sm">
+<span class="text-xs font-semibold text-emerald-green">90 min</span>
+</div>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">Royal Thai Massage</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Deep tissue restoration and pressure point therapy.</p>
+</div>
+</div>
+<div class="pt-4 border-t border-secondary/10 flex items-center gap-md">
+<img alt="Therapist Profile" class="w-12 h-12 rounded-full object-cover border border-rich-gold/30" data-alt="A professional portrait of a serene female wellness expert wearing high-quality white spa uniform. She has a gentle, professional smile and her hair is neatly tied back. The background is a soft-focus minimalist clinic setting with warm light-mode tones and sophisticated atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACSPrSirEJ5qqCeA5J1cT5049Bi8FKQjfNLMQai5WHV9-nFJ8Vw_EcmbXDsRQq8C-IqQ-VF9PuXtLXpwh-Zd0iGo_AaZh91Ea4GeImRZOIQJYTm4DFhVcpYGAhHMMEeIfe3wUn6rxm0-Sma8mKrOPjjp7G-vTK13Sgf3MgZjBlEBYgAZHEfFdTHP-b4OkS2ON9zFLSFqXPPOwXeADBPD6lDoXY6iMjotaZqKyvQL9YeZKXe5Kg05vC6oagiEr1nzx6Gvv1RAbyXyM"/>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Wellness Expert</p>
+<p class="font-body-md font-semibold text-on-surface">Elena S. Volkov</p>
+</div>
+</div>
+</div>
+<div class="glass-card rounded-2xl p-md bg-emerald-green text-white">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[10px] opacity-80 uppercase">Total Estimate</span>
+<span class="material-symbols-outlined text-sm">info</span>
+</div>
+<p class="font-headline-md text-headline-md mt-1">$350.00</p>
+</div>
+</aside>
+<!-- Main Content: Calendar Grid -->
+<section class="col-span-6 h-full flex flex-col gap-md animate-fade-in" style="animation-delay: 0.2s;">
+<div class="glass-card rounded-3xl p-lg h-full flex flex-col">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-headline-lg text-headline-lg text-primary">October 2024</h2>
+<div class="flex gap-4">
+<button class="w-10 h-10 rounded-full border border-secondary/20 flex items-center justify-center text-primary hover:bg-secondary/5 transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-full border border-secondary/20 flex items-center justify-center text-primary hover:bg-secondary/5 transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="calendar-grid border-b border-secondary/10 pb-4 mb-4">
+<div class="text-center font-label-caps text-[11px] text-on-surface-variant">SUN</div>
+<div class="text-center font-label-caps text-[11px] text-on-surface-variant">MON</div>
+<div class="text-center font-label-caps text-[11px] text-on-surface-variant">TUE</div>
+<div class="text-center font-label-caps text-[11px] text-on-surface-variant">WED</div>
+<div class="text-center font-label-caps text-[11px] text-on-surface-variant">THU</div>
+<div class="text-center font-label-caps text-[11px] text-on-surface-variant">FRI</div>
+<div class="text-center font-label-caps text-[11px] text-on-surface-variant">SAT</div>
+</div>
+<div class="calendar-grid flex-1 items-stretch">
+<!-- Week 1 -->
+<div class="p-2 text-on-surface-variant/30 flex flex-col items-center justify-start py-4">29</div>
+<div class="p-2 text-on-surface-variant/30 flex flex-col items-center justify-start py-4">30</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">01</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40 group-hover:bg-emerald-green transition-colors"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">02</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">03</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative bg-primary/5 rounded-2xl active-ring">
+<span class="z-10 font-medium text-primary">04</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">05</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<!-- Week 2 -->
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">06</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">07</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface-variant/30 flex flex-col items-center justify-start py-4">08</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">09</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">10</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">11</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">12</div>
+<!-- Week 3 -->
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">13</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">14</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">15</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">16</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">17</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">
+<span class="z-10 font-medium">18</span>
+<div class="absolute bottom-4 w-1.5 h-1.5 rounded-full bg-emerald-green/40"></div>
+</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">19</div>
+<!-- Week 4 -->
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">20</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">21</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">22</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">23</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">24</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">25</div>
+<div class="p-2 text-on-surface flex flex-col items-center justify-start py-4 group cursor-pointer relative">26</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Availability Slots -->
+<aside class="col-span-3 h-full flex flex-col gap-md animate-fade-in" style="animation-delay: 0.3s;">
+<div class="glass-card rounded-2xl p-md flex flex-col h-full">
+<div class="mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Availability</h3>
+<p class="font-body-sm text-on-surface-variant">Friday, October 04</p>
+</div>
+<div class="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-4">
+<!-- Morning -->
+<div class="space-y-3">
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Morning</p>
+<div class="grid grid-cols-1 gap-2">
+<button class="w-full py-4 px-6 rounded-xl border border-secondary/10 hover:border-emerald-green/50 bg-white/40 backdrop-blur-md transition-all flex justify-between items-center group">
+<span class="font-medium text-on-surface">09:00 AM</span>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity text-emerald-green">check_circle</span>
+</button>
+<button class="w-full py-4 px-6 rounded-xl border border-secondary/10 hover:border-emerald-green/50 bg-white/40 backdrop-blur-md transition-all flex justify-between items-center group">
+<span class="font-medium text-on-surface">10:30 AM</span>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity text-emerald-green">check_circle</span>
+</button>
+</div>
+</div>
+<!-- Premium Golden Hour -->
+<div class="space-y-3 pt-4">
+<div class="flex items-center gap-2">
+<p class="font-label-caps text-[10px] text-rich-gold uppercase tracking-widest">Golden Hour</p>
+<span class="material-symbols-outlined text-[14px] text-rich-gold" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="grid grid-cols-1 gap-2">
+<button class="w-full py-4 px-6 rounded-xl border-2 border-rich-gold/20 bg-rich-gold/5 backdrop-blur-md transition-all flex justify-between items-center ring-offset-2 hover:ring-2 hover:ring-rich-gold/50">
+<span class="font-semibold text-tertiary">04:30 PM</span>
+<span class="text-[10px] bg-rich-gold text-white px-2 py-0.5 rounded-full uppercase">Premium</span>
+</button>
+<button class="w-full py-4 px-6 rounded-xl border-2 border-rich-gold/20 bg-rich-gold/5 backdrop-blur-md transition-all flex justify-between items-center ring-offset-2 hover:ring-2 hover:ring-rich-gold/50">
+<span class="font-semibold text-tertiary">06:00 PM</span>
+<span class="text-[10px] bg-rich-gold text-white px-2 py-0.5 rounded-full uppercase">Premium</span>
+</button>
+</div>
+</div>
+<!-- Evening -->
+<div class="space-y-3 pt-4">
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Evening</p>
+<div class="grid grid-cols-1 gap-2">
+<button class="w-full py-4 px-6 rounded-xl border border-secondary/10 hover:border-emerald-green/50 bg-white/40 backdrop-blur-md transition-all flex justify-between items-center group">
+<span class="font-medium text-on-surface">07:30 PM</span>
+<span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity text-emerald-green">check_circle</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Action Bar -->
+<footer class="fixed bottom-0 w-full z-50 bg-surface/90 backdrop-blur-xl border-t border-secondary/10">
+<div class="max-w-container-max mx-auto px-lg h-24 flex items-center justify-between">
+<a href="explore_services.html" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors group">
+<span class="material-symbols-outlined transition-transform group-hover:-translate-x-1">arrow_back</span>
+<span class="font-label-caps uppercase">Back to Experts</span>
+</a>
+<div class="flex items-center gap-xl">
+<div class="hidden lg:flex flex-col items-end">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Selected Slot</span>
+<span class="font-body-md font-semibold text-primary">Fri, Oct 4 • 04:30 PM</span>
+</div>
+<a href="checkout.html"><button class="bg-primary hover:bg-emerald-green text-white px-12 py-4 rounded-full font-label-caps uppercase tracking-widest shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95 flex items-center gap-3">
+                    Continue to Details
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button></a>
+</div>
+</div>
+</footer>
+<!-- Background Decorative Elements -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 opacity-30">
+<div class="absolute top-[10%] left-[5%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-[20%] right-[10%] w-[300px] h-[300px] bg-rich-gold/5 rounded-full blur-[80px]"></div>
+</div>
+<script>
+        // Micro-interactions for availability slots
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.closest('aside')) {
+                    // Remove selection from others
+                    document.querySelectorAll('aside button').forEach(b => b.classList.remove('active-ring', 'bg-emerald-green/5', 'border-emerald-green/30'));
+                    // Add selection to this one
+                    this.classList.add('active-ring', 'bg-emerald-green/5', 'border-emerald-green/30');
+                }
+            });
+        });
+    </script>
+</body></html>

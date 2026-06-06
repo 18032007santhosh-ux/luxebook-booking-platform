@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LuxeBook Admin | Portfolio Management</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#e6e9e6",
+                    "on-primary-fixed": "#002019",
+                    "secondary-container": "#ff97b4",
+                    "surface-dim": "#d8dbd8",
+                    "tertiary-fixed": "#ffe088",
+                    "surface": "#f7faf7",
+                    "surface-variant": "#e0e3e0",
+                    "on-secondary-fixed-variant": "#792b46",
+                    "surface-container": "#eceeeb",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#cca730",
+                    "surface-container-low": "#f2f4f1",
+                    "outline-variant": "#bfc9c4",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#ffb1c5",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#e9c349",
+                    "primary-container": "#0f5e4d",
+                    "surface-tint": "#206a58",
+                    "inverse-on-surface": "#eff1ee",
+                    "on-background": "#191c1b",
+                    "on-tertiary-fixed-variant": "#574500",
+                    "on-surface-variant": "#3f4945",
+                    "tertiary": "#735c00",
+                    "primary": "#004537",
+                    "surface-bright": "#f7faf7",
+                    "on-tertiary-container": "#4f3d00",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#191c1b",
+                    "on-secondary-fixed": "#3f001b",
+                    "inverse-surface": "#2d312f",
+                    "on-primary-fixed-variant": "#005141",
+                    "outline": "#6f7975",
+                    "surface-container-highest": "#e0e3e0",
+                    "primary-fixed-dim": "#8ed4bf",
+                    "on-secondary-container": "#7a2b46",
+                    "secondary": "#97425d",
+                    "inverse-primary": "#8ed4bf",
+                    "on-error-container": "#93000a",
+                    "primary-fixed": "#aaf1da",
+                    "secondary-fixed": "#ffd9e1",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#8fd5bf",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#241a00",
+                    "background": "#f7faf7",
+                    "rich-gold": "#D4AF37", // Custom brand color added per guidance
+                    "emerald-green": "#0F5E4D" // Custom brand color added per guidance
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "2xl": "24px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "md": "24px",
+                    "gutter": "24px",
+                    "xl": "80px",
+                    "lg": "48px",
+                    "base": "8px",
+                    "container-max": "1440px",
+                    "sm": "12px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Playfair Display"],
+                    "body-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Playfair Display"],
+                    "label-caps": ["Inter"],
+                    "headline-lg": ["Playfair Display"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 30px 60px -12px rgba(30, 30, 30, 0.05);
+        }
+        .luxury-shadow {
+            box-shadow: 0 30px 60px -12px rgba(30, 30, 30, 0.08);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .active-tab-border {
+            position: relative;
+        }
+        .active-tab-border::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #004537;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden md:flex flex-col h-screen w-80 fixed left-0 top-0 bg-surface dark:bg-surface-dim border-r border-outline-variant/20 shadow-xl z-50">
+<div class="px-lg py-lg flex flex-col gap-md h-full">
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-10 h-10 bg-primary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">diamond</span>
+</div>
+<div>
+<a href="index.html" class="font-display-lg text-headline-md text-primary tracking-tight leading-none cursor-pointer">LuxeBook Admin</a>
+<p class="font-label-caps text-on-surface-variant/60 uppercase text-[10px]">Elite Concierge</p>
+</div>
+</div>
+<nav class="flex flex-col gap-sm flex-grow">
+<!-- Overview -->
+<a class="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" href="index.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Overview</span>
+</a>
+<!-- Appointments -->
+<a class="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" href="calendar_booking.html">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-body-md">Appointments</span>
+</a>
+<!-- Portfolio (ACTIVE) -->
+<a class="flex items-center gap-sm bg-primary-container/10 text-primary rounded-lg px-md py-sm border-l-4 border-primary transition-all" href="portfolio_management.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">collections</span>
+<span class="font-body-md font-bold">Portfolio</span>
+</a>
+<!-- Staff -->
+<a class="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" href="explore_services.html">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-body-md">Staff</span>
+</a>
+<!-- Customers -->
+<a class="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md">Customers</span>
+</a>
+<!-- Analytics -->
+<a class="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-body-md">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-sm border-t border-outline-variant/20 pt-lg">
+<a class="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md">Support</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" href="login_portal.html">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-md">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-80 min-h-screen">
+<!-- Top Bar -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-lg py-sm w-full bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-sm">
+<h1 class="font-display-lg text-headline-md md:text-headline-lg text-primary tracking-tight">Portfolio Management</h1>
+<div class="flex items-center gap-md">
+<div class="relative hidden lg:block">
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant/30 rounded-full text-body-sm focus:outline-none focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="Search gallery..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50">search</span>
+</div>
+<div class="flex gap-sm">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant/70 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant/70 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant/50">
+<img alt="Administrator Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a sophisticated male administrator in a tailored dark navy suit, captured with soft, cinematic lighting against a blurred modern office background. The aesthetic is high-end, clean, and authoritative, reflecting elite concierge management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAHJ_YqFbeorUWY_Ebt87q3JtSxG_fWnaeVGf_yXPtvyxU4NF0-AzZIpxUpCElH3m-vDHyOnuZPEy_-edUXQYgccTvcK0xsJlqYBFUEeD34l4SbSNV72GPYRs8WhgJHLrvLShgBu5FBJJ6HY5KS9w0vc4v-QKGU7h2W6MZkMnB_6oFWTbM6uAr_kCvNw8GhOpPq7kYG4_uwBIykoOV2K2S_D65_7RhKDMIGqYku5ELd7o4lRHXtWMGSvKi9wbQ8vFFh_m8VEKcVwg"/>
+</div>
+</div>
+</div>
+</header>
+<div class="p-lg max-w-container-max mx-auto">
+<!-- Stats Overview -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-lg">
+<div class="glass-card p-lg rounded-2xl flex flex-col justify-between h-32 hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-on-surface-variant/60 uppercase">Total Views</span>
+<span class="material-symbols-outlined text-primary/40">visibility</span>
+</div>
+<div class="flex items-end gap-xs">
+<p class="font-display-lg text-headline-xl leading-none">12.4k</p>
+<span class="text-emerald-green font-bold text-body-sm mb-1">+8%</span>
+</div>
+</div>
+<div class="glass-card p-lg rounded-2xl flex flex-col justify-between h-32 hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-on-surface-variant/60 uppercase">Engagement Rate</span>
+<span class="material-symbols-outlined text-primary/40">favorite</span>
+</div>
+<div class="flex items-end gap-xs">
+<p class="font-display-lg text-headline-xl leading-none">4.2%</p>
+<span class="text-emerald-green font-bold text-body-sm mb-1">+1.2%</span>
+</div>
+</div>
+<div class="glass-card p-lg rounded-2xl flex flex-col justify-between h-32 hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-on-surface-variant/60 uppercase">Featured Slots</span>
+<span class="material-symbols-outlined text-primary/40">star</span>
+</div>
+<div class="flex items-end gap-xs">
+<p class="font-display-lg text-headline-xl leading-none">6/12</p>
+<span class="text-on-surface-variant/40 text-body-sm mb-1">Available</span>
+</div>
+</div>
+<div class="glass-card p-lg rounded-2xl flex flex-col justify-between h-32 hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-on-surface-variant/60 uppercase">Inquiries Generated</span>
+<span class="material-symbols-outlined text-primary/40">chat_bubble</span>
+</div>
+<div class="flex items-end gap-xs">
+<p class="font-display-lg text-headline-xl leading-none">89</p>
+<span class="text-emerald-green font-bold text-body-sm mb-1">+14</span>
+</div>
+</div>
+</section>
+<!-- Portfolio Controls & Filters -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-lg gap-md">
+<div class="flex items-center gap-sm overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
+<button class="px-md py-sm bg-primary text-on-primary rounded-full font-label-caps uppercase whitespace-nowrap">All Work</button>
+<button class="px-md py-sm bg-surface-container-high/50 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full font-label-caps uppercase whitespace-nowrap">Hair Styling</button>
+<button class="px-md py-sm bg-surface-container-high/50 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full font-label-caps uppercase whitespace-nowrap">Facial &amp; Skin</button>
+<button class="px-md py-sm bg-surface-container-high/50 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full font-label-caps uppercase whitespace-nowrap">Spa Interiors</button>
+<button class="px-md py-sm bg-surface-container-high/50 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-full font-label-caps uppercase whitespace-nowrap">Wellness</button>
+</div>
+<button class="flex items-center gap-xs px-lg py-sm bg-emerald-green text-white rounded-full font-bold shadow-lg hover:shadow-xl hover:opacity-90 transition-all scale-95 hover:scale-100 whitespace-nowrap" onclick="document.getElementById('uploadModal').classList.remove('hidden')">
+<span class="material-symbols-outlined">add</span>
+                    Upload New Work
+                </button>
+</div>
+<!-- Bento Portfolio Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Large Item (Bento Span) -->
+<div class="lg:col-span-2 group relative h-[500px] rounded-2xl overflow-hidden glass-card">
+<img alt="Luxury Spa Interior" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A wide-angle, high-fidelity photograph of a luxury spa interior featuring serene, warm lighting. The design includes natural stone walls, a shallow reflecting pool, and soft santal-colored linens. The atmosphere is quiet, prestigious, and extremely high-end, evoking the feeling of an elite private resort." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACGNCzlOLuhr1fZGo74CvqV_ZphalIczw0Yo7UJo7bkBPTQfR4qbpTmmeGv7FUuu_Pb8ZjoYvnNSJtFKeaRS7-UM_LYD1ZWNLkmx4JIjtXm9r7nF1y6_E1xTXVWH74ocnEUhgnQp4fFsJso10yRf5fWDc_jCwZtIWHDlFj4W7PYNR9yEuH7u4ojAKXPE5A0tX69e0S9_Aq6R10NUxESJz1qr--gxNLbJp14C5_vj64789p_0OAg7G3Au-W0itPfUP4lhFeJTCnKz0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80"></div>
+<div class="absolute bottom-0 left-0 p-lg w-full flex justify-between items-end">
+<div>
+<span class="bg-rich-gold/20 text-rich-gold border border-rich-gold/40 px-sm py-1 rounded-full text-[10px] font-label-caps uppercase mb-sm inline-block">Featured</span>
+<h3 class="font-headline-lg text-white mb-xs">Zen Sanctuary Presidential Suite</h3>
+<p class="text-white/70 font-body-sm">Interior Design • Wellness Experience</p>
+</div>
+<div class="flex gap-sm">
+<button class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-primary transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-error transition-all">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Portrait Item -->
+<div class="group relative h-[500px] rounded-2xl overflow-hidden glass-card">
+<img alt="Bridal Hair Styling" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A vertical portrait of a bride with meticulously styled hair in a classic updo, adorned with subtle gold leaf accents. The lighting is soft and warm, highlighting the texture and precision of the hair styling. The background is a soft, out-of-focus santal-colored fabric, creating a professional and premium bridal portfolio image." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVG247jbKbfcVZQqpx0Eor5M5lc9Y3Qjr_nQ6VgHgRKmRfhsSQKliA-OhY9ePboE0V344T4u8uxirEslFi4aksulFzYH5LAqhqFsDWilCxbJlEGT5vC26YfG6bQnuOqec3_ixD5r8sCVAmXHSFTPcvlPaDgJys2zE4dg27a3TEIWAIuzkUGHfmS3WIlhDxp_L23e6p-BJkaYdJUEqjCn_Z_pUOuksLTVZRL1xzFoGgH6x27ENZE5VBd9ABI3Unw_0I53KG8gRDFOI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="absolute inset-0 p-lg flex flex-col justify-end translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+<h3 class="font-headline-md text-white mb-xs">Royal Bridal Collection</h3>
+<p class="text-white/70 font-body-sm mb-md">Hair Styling • Weddings</p>
+<div class="flex justify-between items-center">
+<div class="flex gap-base">
+<button class="p-2 rounded-full bg-white/20 text-white hover:bg-white hover:text-primary transition-all"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-2 rounded-full bg-white/20 text-white hover:bg-white hover:text-error transition-all"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-white/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-green"></div>
+<span class="ml-2 font-label-caps text-white text-[10px] uppercase">Featured</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Regular Square Item -->
+<div class="group relative h-[400px] rounded-2xl overflow-hidden glass-card">
+<img alt="Gold Facial Treatment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Close-up of a high-end gold-infused facial treatment being applied in a dimly lit, luxury treatment room. The skin glows with health and prestige. The lighting is focused and artistic, emphasizing the rich gold texture and the meticulous nature of the luxury skincare service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASa2AmPcT8odReoqQRL100s6u-0yPyGh86wRq344CLLZ4w6Lw5QcD87OiEj-F9ERSgerwrdC3pan4qLIdH0xjesOtH3USDTMBNqvgOX4-DrtXG2CEB49x4CqjixPtobbZy0RAODyBVL54KXYVtOHz43Nbk4hmZmg4hbT2oHl7079F4ec5rKm3l9tLeNHAQ4jzDlUvz9DkPRMcZXBSm0_hTmF1NdIpWZscGPiC6mJ3LgTIMNkRuRdTqy2hpKbBHKyokcuBFmsjTdco"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="absolute inset-0 p-lg flex flex-col justify-end translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+<h3 class="font-headline-md text-white mb-xs">24K Gold Rejuvenation</h3>
+<p class="text-white/70 font-body-sm mb-md">Skincare • Anti-Aging</p>
+<div class="flex gap-base">
+<button class="p-2 rounded-full bg-white/20 text-white hover:bg-white hover:text-primary transition-all"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-2 rounded-full bg-white/20 text-white hover:bg-white hover:text-error transition-all"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</div>
+</div>
+<!-- Regular Square Item -->
+<div class="group relative h-[400px] rounded-2xl overflow-hidden glass-card">
+<img alt="Hot Stone Therapy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A macro shot of basalt hot stones placed on a client's back during a luxury massage session. Steam rises softly from the stones in a serene, dark-toned therapy room. The visual style is editorial and expensive, with deep charcoal shadows and warm ivory highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9bokfkgrxoQb3sJfjxN4Oem4I5H3pwa-pfTOOnwKGo1UWwPzSyWoWTTALPktyH8vHOqs7hsaEOQtn5eHZPq_-Q_8-OBqr8eHHfLkrAG2D7IyIjQsZxSFcDnfBmi82aT4sDRjGmFnZx0LHC8NKUAK6RFsbaBmNxjxW-O0_qqeTeS9RO1HZcutbIIrxktOv7lKyqRNS6rZOTbYSl2zmRJz_9C5cAB__yeJanPx_hkxB_prwyu4tevFhai2Ieflz2UOkWYlbM1A_FYo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="absolute inset-0 p-lg flex flex-col justify-end translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+<h3 class="font-headline-md text-white mb-xs">Obsidian Stone Therapy</h3>
+<p class="text-white/70 font-body-sm mb-md">Massage • Relaxation</p>
+<div class="flex gap-base">
+<button class="p-2 rounded-full bg-white/20 text-white hover:bg-white hover:text-primary transition-all"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-2 rounded-full bg-white/20 text-white hover:bg-white hover:text-error transition-all"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</div>
+</div>
+<!-- Regular Square Item -->
+<div class="group relative h-[400px] rounded-2xl overflow-hidden glass-card">
+<img alt="Artisan Perfume Bar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A curated collection of bespoke artisan perfume bottles displayed on a marble counter in a high-end fragrance atelier. Soft morning light filters through large windows, creating delicate reflections on the glass bottles. The scene is minimalist and exudes quiet luxury and personalized service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-3qUzQjuvLdef_aSGBwp-rHiLiuNU5l3fMEJfWo9Wbd4dHQA-TTgRdDGEg7BK4dBpBhxjkEq77jirFGPGqNb9RW_1oSKF8XYHwZ4CF8CPSpwHG6ZzxfRZ_O2-N2X8vRIz9ItewcbuIK0jQJU-nQjvVcF1xcskni5q76jgt-l408lhwUZEjS80H9WkkxlGwzi5cW_m0oNQdN4q_YhAj_2245jdXYl4auQJumxcylq-zySu0w3J3ohbSN3S7xPcAQB-tEEwIT1xCuo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="absolute inset-0 p-lg flex flex-col justify-end translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+<h3 class="font-headline-md text-white mb-xs">Bespoke Fragrance Bar</h3>
+<p class="text-white/70 font-body-sm mb-md">Experience • Personalized</p>
+<div class="flex gap-base">
+<button class="p-2 rounded-full bg-white/20 text-white hover:bg-white hover:text-primary transition-all"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+<button class="p-2 rounded-full bg-white/20 text-white hover:bg-white hover:text-error transition-all"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Upload Glassmorphic Modal -->
+<div class="hidden fixed inset-0 z-[100] flex items-center justify-center p-md bg-black/40 backdrop-blur-md" id="uploadModal">
+<div class="glass-card w-full max-w-2xl rounded-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+<div class="p-lg flex justify-between items-center border-b border-outline-variant/20">
+<h2 class="font-headline-md text-primary">Upload Portfolio Work</h2>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-high rounded-full transition-colors" onclick="document.getElementById('uploadModal').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-lg space-y-lg">
+<div class="border-2 border-dashed border-outline-variant/50 rounded-2xl p-xl flex flex-col items-center justify-center gap-md hover:border-primary/50 transition-colors cursor-pointer bg-surface/50">
+<div class="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-4xl">cloud_upload</span>
+</div>
+<div class="text-center">
+<p class="font-body-lg font-bold">Drag &amp; drop high-fidelity images</p>
+<p class="font-body-sm text-on-surface-variant/60">Supported formats: RAW, TIFF, PNG, JPG (Max 50MB)</p>
+</div>
+<button class="px-lg py-sm border border-primary text-primary rounded-full font-bold hover:bg-primary/5 transition-colors">Browse Files</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-xs">
+<label class="font-label-caps text-[10px] text-on-surface-variant uppercase ml-1">Project Title</label>
+<input class="w-full px-md py-sm bg-surface-container-low border-b-2 border-outline-variant/30 focus:border-primary focus:outline-none transition-all" placeholder="e.g. Diamond Cut Collection" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-[10px] text-on-surface-variant uppercase ml-1">Service Category</label>
+<select class="w-full px-md py-sm bg-surface-container-low border-b-2 border-outline-variant/30 focus:border-primary focus:outline-none transition-all">
+<option>Hair Styling</option>
+<option>Skincare</option>
+<option>Wellness</option>
+<option>Interiors</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<input class="w-5 h-5 rounded border-outline-variant text-emerald-green focus:ring-emerald-green" id="featureCheck" type="checkbox"/>
+<label class="font-body-md text-on-surface-variant" for="featureCheck">Mark as Featured on Landing Page</label>
+</div>
+</div>
+<div class="p-lg bg-surface-container-low/50 flex justify-end gap-md">
+<button class="px-lg py-sm font-bold text-on-surface-variant/60 hover:text-on-surface transition-colors" onclick="document.getElementById('uploadModal').classList.add('hidden')">Cancel</button>
+<button class="px-xl py-sm bg-emerald-green text-white rounded-full font-bold shadow-lg hover:shadow-xl transition-all">Publish to Gallery</button>
+</div>
+</div>
+</div>
+<!-- Mobile Navigation Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-xl border-t border-outline-variant/20 px-md py-xs flex justify-around items-center z-50">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant/50 p-2" href="index.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-label-caps uppercase">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant/50 p-2" href="calendar_booking.html">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[10px] font-label-caps uppercase">Book</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary p-2" href="portfolio_management.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">collections</span>
+<span class="text-[10px] font-label-caps uppercase font-bold">Port</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant/50 p-2" href="explore_services.html">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-label-caps uppercase">Users</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant/50 p-2" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-label-caps uppercase">Set</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and UI Logic
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('uploadModal').classList.add('hidden');
+            }
+        });
+    </script>
+</body></html>
