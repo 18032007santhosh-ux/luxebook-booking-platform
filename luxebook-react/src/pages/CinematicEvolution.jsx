@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import LiquidShader from "../components/ui/LiquidShader";
 
 const styles = `
@@ -31,6 +32,14 @@ const styles = `
 
 export default function CinematicEvolution() {
   const [scrollY, setScrollY] = useState(0);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+    navigate("/login");
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,7 +103,7 @@ export default function CinematicEvolution() {
           </Link>
           <Link
             className="flex items-center gap-4 text-warm-ivory/70 hover:text-warm-ivory hover:bg-white/5 rounded-r-full mr-4 py-3 px-10 transition-all duration-500 hover:translate-x-2"
-            to="/book"
+            to="/appointments"
           >
             <span className="material-symbols-outlined">calendar_month</span>
             <span className="font-body-md tracking-wide">Appointments</span>
@@ -113,16 +122,16 @@ export default function CinematicEvolution() {
             <span className="material-symbols-outlined">auto_awesome</span>
             <span className="font-body-md tracking-wide">Portfolio</span>
           </Link>
-          <Link
-            className="flex items-center gap-4 text-warm-ivory/70 hover:text-warm-ivory hover:bg-white/5 rounded-r-full mr-4 py-3 px-10 transition-all duration-500 hover:translate-x-2"
-            to="/login"
+          <a
+            className="flex items-center gap-4 text-warm-ivory/70 hover:text-warm-ivory hover:bg-white/5 rounded-r-full mr-4 py-3 px-10 transition-all duration-500 hover:translate-x-2 cursor-pointer"
+            onClick={handleLogout}
           >
             <span className="material-symbols-outlined">logout</span>
             <span className="font-body-md tracking-wide">Logout</span>
-          </Link>
+          </a>
         </nav>
         <div className="px-8 pb-12">
-          <Link to="/book">
+          <Link to="/appointments">
             <button className="w-full bg-gold text-[#002019] font-label-caps py-4 rounded-full shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105 active:scale-95 transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.6)]">
               BOOK NEW SERVICE
             </button>
@@ -208,7 +217,7 @@ export default function CinematicEvolution() {
             <h3 className="font-headline-lg text-warm-ivory tracking-tight text-shadow-sm text-2xl font-bold">
               Upcoming Appointments
             </h3>
-            <Link to="/book" className="text-gold font-label-caps hover:text-warm-ivory transition-colors text-[11px] tracking-widest border-b border-gold/30 pb-1">
+            <Link to="/appointments" className="text-gold font-label-caps hover:text-warm-ivory transition-colors text-[11px] tracking-widest border-b border-gold/30 pb-1">
               VIEW ALL CALENDAR
             </Link>
           </div>
@@ -255,7 +264,7 @@ export default function CinematicEvolution() {
 
             {/* New Appointment Action */}
             <Link
-              to="/book"
+              to="/appointments"
               className="bg-white/5 rounded-[32px] p-10 border-2 border-dashed border-gold/20 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-gold/5 hover:border-gold/40 transition-all duration-500 hover:scale-[1.02]"
             >
               <div className="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mb-6 border border-gold/20 shadow-[0_0_20px_rgba(212,175,55,0.2)] group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all">
@@ -292,7 +301,7 @@ export default function CinematicEvolution() {
                     Volcanic warmth to release deep-seated tension and restore skeletal alignment.
                   </p>
                   <Link
-                    to="/book"
+                    to="/appointments"
                     className="w-14 h-14 bg-gold rounded-full flex items-center justify-center text-on-primary group-hover:scale-110 shadow-lg shadow-gold/30 transition-all duration-500"
                   >
                     <span className="material-symbols-outlined">arrow_forward</span>
@@ -317,7 +326,7 @@ export default function CinematicEvolution() {
                     A refreshing blast of pure oxygen and sub-zero temperatures to instantly lift and firm.
                   </p>
                   <Link
-                    to="/book"
+                    to="/appointments"
                     className="w-14 h-14 bg-gold rounded-full flex items-center justify-center text-on-primary group-hover:scale-110 shadow-lg shadow-gold/30 transition-all duration-500"
                   >
                     <span className="material-symbols-outlined">arrow_forward</span>

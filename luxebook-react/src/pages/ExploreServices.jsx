@@ -3,64 +3,15 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import TiltedCard from "../components/ui/TiltedCard";
 import BlurText from "../components/ui/BlurText";
+import SpotlightCard from "../components/ui/SpotlightCard";
+import LuxuryBackground from "../components/ui/LuxuryBackground";
+import { Player } from "@remotion/player";
+import { PerspectiveMarquee } from "../components/ui/PerspectiveMarquee";
+import LuxuryBadge from "../components/ui/LuxuryBadge";
+import SectionDivider from "../components/ui/SectionDivider";
+import GlassInfoCard from "../components/ui/GlassInfoCard";
 
-const SERVICES_DATA = [
-  {
-    id: 1,
-    title: "Signature Grooming",
-    price: 185,
-    category: "hair",
-    duration: "75 Minutes",
-    description: "A bespoke haircutting experience including a private consultation, essential oil scalp treatment, and artisanal styling.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBIUvrXGi_lKXZXyL4QlCVRdUwGcaulVdsk54fnqx-FnWdpY02HbTccJ3_i0-xIqOs-rUiCEEmMRlgmaeAHNtdXngoa1G1TKceLG2tgBIOSr0FjjfFvrP-IOlkKbB_mjJpJuAwUVjLuCqL9NfhsXkUydL4W6BCdwGdflbB7RU2uQ0Y11Y6wRqpb5ynC9B7bc5deWvqw2OebDhyY2Mi0SU5_GJx31mReA64Sv8tbsP4fbQYFCrZMXmEfZr905858Jws8S2sczvwzPuM",
-    tag: "Popular"
-  },
-  {
-    id: 2,
-    title: "Luminous Radiance",
-    price: 320,
-    category: "facials",
-    duration: "90 Minutes",
-    description: "Advanced oxygen-infusion facial using rare botanical extracts and 24k gold leaf to restore immediate vitality and glow.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDwJJny5ffqCmT3d4SqQG0c1inCbfM3DmDRPnvSubnhJOXV21nCGNZfurraz4zZJPpTRbavhvV96tmO7V6XJS_Jw46sBuiioebUQvuVs8SZXMVw6zR4r6q2nE9NXNYObgjI9hsA3Vhwrv44-rY-TxAFgvCqtZjI8nkep8Bnzk8JL06qHAyku-n2fJIR7ZJLyEzCK4ZUXTrlZy-NQ1kkqP-KPvvulU7beg3Xywrw8jn-QvqSDyGecfn5aUTGbxaP0JRyBUj-4bZ0M6s"
-  },
-  {
-    id: 3,
-    title: "Deep Sanctuary",
-    price: 450,
-    category: "spa",
-    duration: "120 Minutes",
-    description: "Our signature full-body hot stone massage combined with a private thermal suite experience and herbal rejuvenation.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDhw74xQy_evKeImHvzRGo7iwD4oMpg-D4aeHFjI1ouJidnsLYfYlgIGw9e4irDjDmqSPzl_ShlAvEKMkHbpdHpkkninW_jGza_tWj-AcapRCSj7MWKs80TwwFwKyPD1Hj5dtHAEK3-FPON8XxpfVGQOtWYnDIKNkKyQU0MCAxjMKPesttfLn1oI1AL5j5Dy-iZkM7lBYVQstn9w5W0yZ0dbIbyREFhoqHO8Eh8tvRc4-qKM9uOGiEdhCKUSq1A0rSm42rD0XenVB0"
-  },
-  {
-    id: 4,
-    title: "Vitality IV Infusion",
-    price: 275,
-    category: "wellness",
-    duration: "60 Minutes",
-    description: "Personalized nutrient cocktail designed to enhance cognitive function, immune support, and physical performance.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB9OYbrWMo0oyl52RpAppNMbVcM5tKcdLwbD0QgjZ-mWcx7bggm4FDT1KOoIyDgGTbUnyOhQFhNrmSmZ6qNTai-Lo6FI4AnXkx1qHzdPhBKnjTZ4OrRy3olmA_TSwtBYMN-snx6NcoPgXS_V83R6ddiMU6QKaxrqACPGzj1PMy8FPKdlkCRCTCUpjiaBYC-P06ERx7P34ThUWHBGdwiFN-T5lPwVEgoBMgwY0HGSvKaOglVR-n1C8pZ97sERf3pYpWBa1Msa-Pym1w"
-  },
-  {
-    id: 5,
-    title: "Artisan Hand Ritual",
-    price: 120,
-    category: "spa",
-    duration: "60 Minutes",
-    description: "Comprehensive restoration for hands including organic clay mask, silk-infused soak, and precision nail design.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC0NSeqHjUGs3GuE0afQTBOJYKv_yeNky3tA5x3IqzeNuoSTpX9_W1C1arrtc4B2QIC6E-RbRlnuRwKrjDdOqk1vXTe-DZyGpY493mTbuF-pdZd0CVS4EnfJurHIqp67gMA0B7Q6tYRlmaWlaUwHit2cjJrn-_3S7VcxROxuJ7D6d8Og2OCnB0wrYwG7BOKsU9QMSMNk5IKcBKnHeD9SFgztsOHk9xtKmtT2gzSfILinA_lJEXV2SfJ3n4cwjv_aY65sf_jRfr-C44"
-  },
-  {
-    id: 6,
-    title: "Holistic Aromatherapy",
-    price: 195,
-    category: "wellness",
-    duration: "90 Minutes",
-    description: "A sensory journey utilizing rare essential oils sourced from the French Riviera, tailored to your specific emotional needs.",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB978o4MN_tTFxU83mm7NOx9gp1vPafAumDHXF01ld7nmnZK1tGr8x1KZp6taZKCoiS-g8_LuvhkxBdnA-iwgvgalHGQoidbtYWnJFWQ_yHBJbuzERQNIx_UXy86aiRyxGJqKQAZVT3xwk6LNFHvOLCmvTtoMJTdOfzQRSjxeRGMyPhBZ3TZWrtjTWnedjBR34KT2nvvf-qRgcHfnXXGOwbhWpPUzvCWoY4TnvHn-fGk4sy0Cqsm5m5lTute4PARgBZZXgrXZ98ZT4"
-  }
-];
+import { SERVICES_DATA } from "../data/services";
 
 export default function ExploreServices() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -82,9 +33,9 @@ export default function ExploreServices() {
         <nav className="flex flex-col gap-xs">
           <Link className="flex items-center gap-md text-on-surface-variant hover:bg-surface-variant/30 rounded-full mx-4 py-3 px-6 transition-all duration-300" to="/home">
             <span className="material-symbols-outlined">diamond</span>
-            <span>Concierge</span>
+            <span>Home</span>
           </Link>
-          <Link className="flex items-center gap-md text-on-surface-variant hover:bg-surface-variant/30 rounded-full mx-4 py-3 px-6 transition-all duration-300" to="/book">
+          <Link className="flex items-center gap-md text-on-surface-variant hover:bg-surface-variant/30 rounded-full mx-4 py-3 px-6 transition-all duration-300" to="/appointments">
             <span className="material-symbols-outlined">calendar_month</span>
             <span>Appointments</span>
           </Link>
@@ -98,7 +49,7 @@ export default function ExploreServices() {
           </Link>
         </nav>
         <div className="mt-auto px-4 pb-12">
-          <Link to="/book">
+          <Link to="/appointments">
             <button className="w-full bg-primary-container text-on-primary-container py-4 rounded-full font-label-caps uppercase tracking-widest text-xs hover:shadow-lg transition-all duration-300 border border-tertiary-container/20">
               Book New Service
             </button>
@@ -109,21 +60,72 @@ export default function ExploreServices() {
       {/* Main Content */}
       <main className="pt-[120px] pb-xl px-gutter xl:pl-[320px] max-w-container-max mx-auto min-h-screen">
         {/* Header Section */}
-        <header className="mb-xl text-center md:text-left">
-          <span className="font-label-caps text-tertiary tracking-widest uppercase mb-base block">Curated Selection</span>
-          <BlurText
-            text="Discover Excellence"
-            delay={150}
-            animateBy="words"
-            direction="top"
-            className="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-md"
-          />
-          <p className="font-body-lg text-on-surface-variant max-w-2xl">Refined services tailored for the discerning individual. From bespoke grooming to holistic wellness, explore our private collection.</p>
+        <header className="mb-xl">
+          <SpotlightCard className="w-full min-h-[300px] md:min-h-[350px] p-0 rounded-3xl border border-secondary/20 shadow-2xl relative flex items-center" spotlightColor="rgba(212, 175, 55, 0.2)">
+            <div className="absolute inset-0 z-0 opacity-40 dark:opacity-60 mix-blend-screen pointer-events-none">
+              <LuxuryBackground intensity="normal" />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/60 to-transparent z-0 pointer-events-none"></div>
+
+            <div className="relative z-10 w-full p-8 md:p-12 text-center md:text-left">
+              <span className="font-label-caps text-tertiary tracking-widest uppercase mb-base block drop-shadow-md">Curated Selection</span>
+              <BlurText
+                text="Discover Excellence"
+                delay={150}
+                animateBy="words"
+                direction="top"
+                className="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-md drop-shadow-lg"
+              />
+              <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto md:mx-0 drop-shadow-sm">Refined services tailored for the discerning individual. From bespoke grooming to holistic wellness, explore our private collection.</p>
+            </div>
+          </SpotlightCard>
         </header>
 
-        {/* Sticky Category Filters */}
-        <section className="mb-lg sticky top-[90px] z-30">
-          <div className="flex items-center gap-sm overflow-x-auto pb-4 no-scrollbar">
+        {/* Featured Collections Banner */}
+        <section className="mb-xl">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[250px] group">
+            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Featured Collection" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A1A15]/90 via-[#0A1A15]/60 to-transparent"></div>
+            <div className="absolute inset-0 p-10 flex flex-col justify-center">
+              <LuxuryBadge variant="gold" className="self-start mb-4">SEASONAL EXCLUSIVE</LuxuryBadge>
+              <h3 className="font-display-lg text-3xl text-white mb-2 drop-shadow-md">The Rebirth Collection</h3>
+              <p className="text-white/80 max-w-md font-body-md drop-shadow-sm mb-6">A curated suite of treatments designed to renew vitality for the upcoming season.</p>
+              <button className="self-start text-gold font-label-caps tracking-widest text-xs hover:text-white transition-colors border-b border-gold/30 hover:border-white pb-1">EXPLORE COLLECTION</button>
+            </div>
+          </div>
+        </section>
+
+        {/* Perspective Marquee Filter Bar */}
+        <section className="mb-lg sticky top-[90px] z-30 relative overflow-hidden rounded-full border border-secondary/20 bg-surface/80 backdrop-blur-xl shadow-lg">
+          {/* Marquee Background */}
+          <div className="absolute inset-0 z-0 opacity-30 pointer-events-none mix-blend-screen">
+            <Player
+              component={() => (
+                <PerspectiveMarquee
+                  items={["All Experience", "Artisan Hair", "Advanced Facial", "Sanctuary Spa", "Wellness & Vitality"]}
+                  rotateY={-15}
+                  rotateX={5}
+                  perspective={1000}
+                  pixelsPerFrame={1}
+                  background="transparent"
+                  fadeColor="#0a0a0a"
+                  color="#d4af37"
+                  fontSize={40}
+                />
+              )}
+              durationInFrames={240}
+              fps={30}
+              compositionWidth={1280}
+              compositionHeight={80}
+              style={{ width: "100%", height: "100%" }}
+              controls={false}
+              autoPlay
+              loop
+              clickToPlay={false}
+            />
+          </div>
+
+          <div className="relative z-10 flex items-center gap-sm overflow-x-auto p-4 md:px-6 no-scrollbar">
             <button
               onClick={() => setSelectedCategory("all")}
               className={`px-8 py-3 rounded-full font-body-md border border-outline-variant/20 whitespace-nowrap transition-all glass-card ${selectedCategory === "all" ? "active-filter" : "text-on-surface-variant hover:bg-surface-container"}`}
@@ -160,7 +162,7 @@ export default function ExploreServices() {
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg place-items-center">
           {filteredServices.map(service => (
-            <Link to="/book" key={service.id} className="block">
+            <Link to={`/appointments/${service.id}`} key={service.id} className="block group">
               <TiltedCard
                 imageSrc={service.image}
                 altText={service.title}
@@ -188,6 +190,37 @@ export default function ExploreServices() {
             </Link>
           ))}
         </div>
+
+        <SectionDivider />
+
+        {/* Expert Recommendations & Frequently Booked Together */}
+        <section className="mt-8 mb-xl grid grid-cols-1 md:grid-cols-2 gap-8">
+          <GlassInfoCard 
+            title="Expert Recommendations" 
+            icon="psychiatry"
+            content="Our master therapists suggest pairing the Sculpting Facial with the Deep Ritual Massage for a complete holistic reset."
+          >
+            <div className="mt-6 flex items-center gap-4 border-t border-gold/10 pt-4">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7fOcr1RiqHPyhGTZFQwMBepNYvtmaUkz3ieE9poGufO1v7LsqtIJJKvhzEaTJf2JgyUgX-GGOFG65pm7U4ZBO7c2Kp3Op-qaQsEQrSHwaD3LzLrbWunn2W1cF8Ext4lsbpi17_fRLMDrWbbDKet0IpVGXF2l025x_hAw8LnNeWyR4-hk94RFJKFrOVYp9BTYd4jLTeU5deV_KyoJeErPHgwCL1Nzvov9pu9vldbHg-cuE2ZBQFyY-i563K9DBcjgXmCBz3hOBmGc" alt="Expert" className="w-12 h-12 rounded-full object-cover grayscale" />
+              <div>
+                <p className="font-headline-md text-sm text-primary">Dr. Evelyn Hayes</p>
+                <p className="font-label-caps text-[10px] text-on-surface-variant">HEAD OF WELLNESS</p>
+              </div>
+            </div>
+          </GlassInfoCard>
+
+          <GlassInfoCard 
+            title="The Luxe Guarantee" 
+            icon="verified"
+            content="Every experience is backed by our promise of perfection. If your treatment does not exceed expectations, your next visit is complimentary."
+          >
+            <div className="mt-6 flex flex-wrap gap-2 border-t border-gold/10 pt-4">
+              <span className="text-[10px] font-label-caps tracking-widest px-2 py-1 bg-surface-variant rounded text-on-surface-variant">CLINICALLY PROVEN</span>
+              <span className="text-[10px] font-label-caps tracking-widest px-2 py-1 bg-surface-variant rounded text-on-surface-variant">ORGANIC BOTANICALS</span>
+              <span className="text-[10px] font-label-caps tracking-widest px-2 py-1 bg-surface-variant rounded text-on-surface-variant">DISCREET SERVICE</span>
+            </div>
+          </GlassInfoCard>
+        </section>
       </main>
 
       {/* Bottom Navigation (Mobile Only) */}
@@ -196,7 +229,7 @@ export default function ExploreServices() {
           <span className="material-symbols-outlined">diamond</span>
           <span className="text-[10px] font-label-caps">Concierge</span>
         </Link>
-        <Link className="flex flex-col items-center gap-1 text-on-surface-variant" to="/book">
+        <Link className="flex flex-col items-center gap-1 text-on-surface-variant" to="/appointments">
           <span className="material-symbols-outlined">calendar_month</span>
           <span className="text-[10px] font-label-caps">Bookings</span>
         </Link>

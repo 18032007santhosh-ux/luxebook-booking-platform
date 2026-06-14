@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
+import toast from "react-hot-toast";
 
 export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -239,7 +240,7 @@ export default function Checkout() {
             
             {/* Alternative Interaction */}
             <div className="flex justify-between items-center px-md">
-              <Link to="/book" className="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors font-label-caps">
+              <Link to="/appointments" className="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors font-label-caps">
                 <span className="material-symbols-outlined text-[18px]">arrow_back</span>
                 Back to Schedule
               </Link>
@@ -260,9 +261,9 @@ export default function Checkout() {
             <span className="text-body-sm text-on-surface-variant">Elevating Private Concierge Services Globally</span>
           </div>
           <div className="flex gap-lg">
-            <a className="font-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
-            <a className="font-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
-            <a className="font-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Concierge Support</a>
+            <a className="font-label-caps text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Privacy Policy coming soon."); }}>Privacy Policy</a>
+            <a className="font-label-caps text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Terms of Service coming soon."); }}>Terms of Service</a>
+            <a className="font-label-caps text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Concierge Support coming soon."); }}>Concierge Support</a>
           </div>
         </div>
       </footer>

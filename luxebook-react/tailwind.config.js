@@ -99,6 +99,25 @@ export default {
         "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
         "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600" }],
         "headline-xl": ["48px", { "lineHeight": "56px", "fontWeight": "600" }]
+      },
+      keyframes: {
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        }
+      },
+      animation: {
+        shimmer: 'shimmer 2s infinite',
+        fadeInUp: 'fadeInUp 0.8s ease-out forwards',
+        fadeIn: 'fadeIn 1s ease-out forwards',
+        'fade-in-up-slow': 'fadeInUp 1.2s ease-out forwards',
       }
     },
   },

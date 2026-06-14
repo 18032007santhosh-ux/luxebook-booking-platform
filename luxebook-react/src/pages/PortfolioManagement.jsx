@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../contexts/AuthContext";
 const initialItems = [
   {
     id: 1,
@@ -53,6 +54,15 @@ const initialItems = [
 
 export default function PortfolioManagement() {
   const [items, setItems] = useState(initialItems);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+    navigate("/login");
+  };
+
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,6 +71,26 @@ export default function PortfolioManagement() {
   const [newTitle, setNewTitle] = useState("");
   const [newCategory, setNewCategory] = useState("hair");
   const [newIsFeatured, setNewIsFeatured] = useState(false);
+
+  // File upload state
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const fileInputRef = useRef(null);
+
+  // Reset state when modal closes
+  useEffect(() => {
+    if (!isModalOpen) {
+      setNewTitle("");
+      setNewCategory("hair");
+      setNewIsFeatured(false);
+      setSelectedFile(null);
+      setPreviewUrl(null);
+      setUploadError("");
+      setIsDragging(false);
+    }
+  }, [isModalOpen]);
 
   // Close modal on escape key
   useEffect(() => {
@@ -85,9 +115,55 @@ export default function PortfolioManagement() {
     );
   };
 
+  const processFile = (file) => {
+    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/tiff"];
+    if (!validTypes.includes(file.type)) {
+      setUploadError("Invalid file format. Please upload JPG, PNG, WEBP, or TIFF.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError("File is too large. Maximum size is 5MB.");
+      return;
+    }
+
+    setUploadError("");
+    setSelectedFile(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      processFile(e.target.files[0]);
+    }
+  };
+
   const handleUploadSubmit = (e) => {
     e.preventDefault();
-    if (!newTitle) return;
+    if (!newTitle || !previewUrl) return;
 
     const categoryMap = {
       hair: "Hair Styling",
@@ -103,13 +179,10 @@ export default function PortfolioManagement() {
       categoryLabel: categoryMap[newCategory],
       type: `${categoryMap[newCategory]} • Bespoke Treatment`,
       isFeatured: newIsFeatured,
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuACGNCzlOLuhr1fZGo74CvqV_ZphalIczw0Yo7UJo7bkBPTQfR4qbpTmmeGv7FUuu_Pb8ZjoYvnNSJtFKeaRS7-UM_LYD1ZWNLkmx4JIjtXm9r7nF1y6_E1xTXVWH74ocnEUhgnQp4fFsJso10yRf5fWDc_jCwZtIWHDlFj4W7PYNR9yEuH7u4ojAKXPE5A0tX69e0S9_Aq6R10NUxESJz1qr--gxNLbJp14C5_vj64789p_0OAg7G3Au-W0itPfUP4lhFeJTCnKz0", // Default beautiful placeholder
+      image: previewUrl,
     };
 
     setItems([newItem, ...items]);
-    setNewTitle("");
-    setNewCategory("hair");
-    setNewIsFeatured(false);
     setIsModalOpen(false);
   };
 
@@ -145,7 +218,7 @@ export default function PortfolioManagement() {
             </Link>
             <Link
               className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all"
-              to="/book"
+              to="/appointments"
             >
               <span className="material-symbols-outlined">calendar_month</span>
               <span className="font-body-md">Appointments</span>
@@ -164,33 +237,33 @@ export default function PortfolioManagement() {
               <span className="material-symbols-outlined">badge</span>
               <span className="font-body-md">Staff</span>
             </Link>
-            <Link
-              className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all"
-              to="#"
+            <a
+              className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all cursor-pointer"
+              onClick={(e) => { e.preventDefault(); toast("Customers feature coming soon."); }}
             >
               <span className="material-symbols-outlined">group</span>
               <span className="font-body-md">Customers</span>
-            </Link>
-            <Link
-              className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all"
-              to="#"
+            </a>
+            <a
+              className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all cursor-pointer"
+              onClick={(e) => { e.preventDefault(); toast("Analytics feature coming soon."); }}
             >
               <span className="material-symbols-outlined">monitoring</span>
               <span className="font-body-md">Analytics</span>
-            </Link>
+            </a>
           </nav>
           <div className="mt-auto flex flex-col gap-sm border-t border-outline-variant/20 pt-lg">
-            <a className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" href="#">
+            <a className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Support portal coming soon."); }}>
               <span className="material-symbols-outlined">help</span>
               <span className="font-body-md">Support</span>
             </a>
-            <Link
-              className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all"
-              to="/login"
+            <a
+              className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all cursor-pointer"
+              onClick={handleLogout}
             >
               <span className="material-symbols-outlined">logout</span>
               <span className="font-body-md">Logout</span>
-            </Link>
+            </a>
           </div>
         </div>
       </aside>
@@ -385,20 +458,62 @@ export default function PortfolioManagement() {
             </div>
             <form onSubmit={handleUploadSubmit}>
               <div className="p-lg space-y-lg">
-                <div className="border-2 border-dashed border-outline-variant/50 rounded-2xl p-xl flex flex-col items-center justify-center gap-md hover:border-primary/50 transition-colors cursor-pointer bg-surface/50">
-                  <div className="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
-                    <span className="material-symbols-outlined text-4xl">cloud_upload</span>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  accept="image/jpeg, image/png, image/webp, image/tiff"
+                  className="hidden"
+                />
+                
+                {previewUrl ? (
+                  <div className="relative rounded-2xl overflow-hidden border border-outline-variant/30 h-64 group bg-surface-container-low">
+                    <img src={previewUrl} alt="Preview" className="w-full h-full object-contain" />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button 
+                        type="button" 
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex items-center gap-2 px-md py-sm bg-white/20 hover:bg-white/30 backdrop-blur-md text-white rounded-full font-bold transition-all"
+                      >
+                        <span className="material-symbols-outlined text-sm">swap_horiz</span>
+                        Replace Image
+                      </button>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <p className="font-body-lg font-bold text-base">Drag & drop high-fidelity images</p>
-                    <p className="font-body-sm text-on-surface-variant/60 text-xs">
-                      Supported formats: RAW, TIFF, PNG, JPG (Max 50MB)
-                    </p>
+                ) : (
+                  <div 
+                    className={`border-2 border-dashed rounded-2xl p-xl flex flex-col items-center justify-center gap-md transition-colors cursor-pointer ${
+                      isDragging ? "border-primary bg-primary/5" : "border-outline-variant/50 hover:border-primary/50 bg-surface/50"
+                    }`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <div className="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center text-primary pointer-events-none">
+                      <span className="material-symbols-outlined text-4xl">cloud_upload</span>
+                    </div>
+                    <div className="text-center pointer-events-none">
+                      <p className="font-body-lg font-bold text-base">Drag & drop high-fidelity images</p>
+                      <p className="font-body-sm text-on-surface-variant/60 text-xs mt-1">
+                        Supported formats: WEBP, TIFF, PNG, JPG (Max 5MB)
+                      </p>
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+                      className="px-lg py-sm border border-primary text-primary rounded-full font-bold hover:bg-primary/5 transition-colors text-xs"
+                    >
+                      Browse Files
+                    </button>
                   </div>
-                  <button type="button" className="px-lg py-sm border border-primary text-primary rounded-full font-bold hover:bg-primary/5 transition-colors text-xs">
-                    Browse Files
-                  </button>
-                </div>
+                )}
+                {uploadError && (
+                  <p className="text-error text-sm mt-1 font-bold flex items-center gap-1">
+                    <span className="material-symbols-outlined text-sm">error</span>
+                    {uploadError}
+                  </p>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
                   <div className="space-y-xs flex flex-col">
                     <label className="font-label-caps text-[10px] text-on-surface-variant uppercase ml-1">
@@ -452,7 +567,12 @@ export default function PortfolioManagement() {
                 </button>
                 <button
                   type="submit"
-                  className="px-xl py-sm bg-emerald-green text-white rounded-full font-bold shadow-lg hover:shadow-xl transition-all"
+                  disabled={!selectedFile}
+                  className={`px-xl py-sm rounded-full font-bold shadow-lg transition-all ${
+                    selectedFile 
+                      ? "bg-emerald-green text-white hover:shadow-xl" 
+                      : "bg-surface-container-high text-on-surface-variant/50 cursor-not-allowed"
+                  }`}
                 >
                   Publish to Gallery
                 </button>
@@ -468,7 +588,7 @@ export default function PortfolioManagement() {
           <span className="material-symbols-outlined">dashboard</span>
           <span className="text-[10px] font-label-caps uppercase">Home</span>
         </Link>
-        <Link className="flex flex-col items-center gap-1 text-on-surface-variant/50 p-2" to="/book">
+        <Link className="flex flex-col items-center gap-1 text-on-surface-variant/50 p-2" to="/appointments">
           <span className="material-symbols-outlined">calendar_month</span>
           <span className="text-[10px] font-label-caps uppercase">Book</span>
         </Link>
@@ -480,7 +600,7 @@ export default function PortfolioManagement() {
           <span className="material-symbols-outlined">group</span>
           <span className="text-[10px] font-label-caps uppercase">Users</span>
         </Link>
-        <a className="flex flex-col items-center gap-1 text-on-surface-variant/50 p-2" href="#">
+        <a className="flex flex-col items-center gap-1 text-on-surface-variant/50 p-2 cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Settings feature coming soon."); }}>
           <span className="material-symbols-outlined">settings</span>
           <span className="text-[10px] font-label-caps uppercase">Set</span>
         </a>

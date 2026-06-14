@@ -1,7 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../../contexts/AuthContext";
 export default function AdminSidebar({ activePage }) {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+    navigate("/login");
+  };
+
   const getLinkClass = (pageName) => {
     const base = "flex items-center gap-sm rounded-lg px-md py-sm transition-all ";
     if (activePage === pageName) {
@@ -29,7 +39,7 @@ export default function AdminSidebar({ activePage }) {
           <span className="material-symbols-outlined">dashboard</span>
           <span className="font-body-md">Overview</span>
         </Link>
-        <Link className={getLinkClass("appointments")} to="/book">
+        <Link className={getLinkClass("appointments")} to="/appointments">
           <span className="material-symbols-outlined">calendar_month</span>
           <span className="font-body-md">Appointments</span>
         </Link>
@@ -48,14 +58,14 @@ export default function AdminSidebar({ activePage }) {
       </nav>
 
       <div className="mt-auto flex flex-col gap-sm border-t border-outline-variant/20 pt-lg">
-        <a className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" href="#">
+        <a className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Support portal coming soon."); }}>
           <span className="material-symbols-outlined">help</span>
           <span className="font-body-md">Support</span>
         </a>
-        <Link className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all" to="/login">
+        <a className="flex items-center gap-sm text-on-surface-variant/60 hover:bg-surface-container-high/50 rounded-lg px-md py-sm transition-all cursor-pointer" onClick={handleLogout}>
           <span className="material-symbols-outlined">logout</span>
           <span className="font-body-md">Logout</span>
-        </Link>
+        </a>
       </div>
     </aside>
   );

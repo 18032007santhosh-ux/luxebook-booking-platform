@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { authService } from "../services/authService";
+import { useAuth } from "../contexts/AuthContext";
 
 const dashboardStyles = `
   .aurora-bg {
@@ -33,6 +36,53 @@ const dashboardStyles = `
 
 export default function Dashboard() {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [liveBookings, setLiveBookings] = useState([]);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    const user = authService.getCurrentUser();
+    const storageKey = user ? `luxebook_reservations_${user.id}` : "luxebook_reservations";
+    const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    if (saved.length > 0) {
+      setLiveBookings(saved);
+    } else {
+      // Fallback to demo data
+      setLiveBookings([
+        {
+          customerName: "Julianna Thorne",
+          serviceName: "Deep Tissue Spa Therapy",
+          status: "Confirmed",
+          avatarBg: "bg-primary-fixed text-primary"
+        },
+        {
+          customerName: "Marcus Vane",
+          serviceName: "Executive Grooming Session",
+          status: "In-Session",
+          avatarBg: "bg-secondary-fixed text-secondary"
+        },
+        {
+          customerName: "Elena Rossi",
+          serviceName: "Personal Concierge Consult",
+          status: "Completed",
+          avatarBg: "bg-surface-container text-outline",
+          opacity: true
+        },
+        {
+          customerName: "Sebastian Cole",
+          serviceName: "Yacht Charter Briefing",
+          status: "Confirmed",
+          avatarBg: "bg-primary-fixed text-primary"
+        }
+      ]);
+    }
+  }, []);
 
   return (
     <div className="bg-background text-on-surface font-body-md overflow-x-hidden min-h-screen">
@@ -57,7 +107,7 @@ export default function Dashboard() {
           </Link>
           <Link
             className="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300"
-            to="/book"
+            to="/appointments"
           >
             <span className="material-symbols-outlined mr-3">calendar_today</span>
             <span className="font-body-sm">Appointments</span>
@@ -76,26 +126,26 @@ export default function Dashboard() {
             <span className="material-symbols-outlined mr-3">explore</span>
             <span className="font-body-sm">Services</span>
           </Link>
-          <Link
-            className="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300"
-            to="/login"
+          <a
+            className="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300 cursor-pointer"
+            onClick={handleLogout}
           >
             <span className="material-symbols-outlined mr-3">logout</span>
             <span className="font-body-sm">Logout</span>
-          </Link>
+          </a>
         </nav>
         <div className="mt-auto px-md py-md border-t border-outline-variant/10">
-          <Link to="/book">
+          <Link to="/appointments">
             <button className="w-full bg-primary text-on-primary py-3 rounded-full font-body-sm mb-lg shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
               New Appointment
             </button>
           </Link>
           <div className="space-y-1">
-            <a className="flex items-center py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+            <a className="flex items-center py-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Settings feature coming soon."); }}>
               <span className="material-symbols-outlined mr-3">settings</span>
               <span className="font-body-sm">Settings</span>
             </a>
-            <a className="flex items-center py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+            <a className="flex items-center py-2 text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Support portal coming soon."); }}>
               <span className="material-symbols-outlined mr-3">help_outline</span>
               <span className="font-body-sm">Support</span>
             </a>
@@ -107,8 +157,8 @@ export default function Dashboard() {
       <header className="fixed top-0 right-0 left-72 h-20 z-40 flex justify-between items-center px-lg backdrop-blur-xl border-b border-outline-variant/20 bg-surface/80 shadow-sm">
         <div className="flex items-center space-x-lg">
           <div className="flex space-x-md text-body-sm">
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#">Direct Support</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#">Documentation</a>
+            <a className="text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Direct Support coming soon."); }}>Direct Support</a>
+            <a className="text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onClick={(e) => { e.preventDefault(); toast("Documentation coming soon."); }}>Documentation</a>
           </div>
         </div>
         <div className="flex items-center space-x-md">
@@ -305,55 +355,37 @@ export default function Dashboard() {
               </div>
               <div className="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
                 {/* Feed Items */}
-                {[
-                  {
-                    name: "Julianna Thorne",
-                    service: "Deep Tissue Spa Therapy",
-                    status: "Confirmed",
-                    statusClass: "bg-emerald-100 text-emerald-800",
-                    avatarBg: "bg-primary-fixed text-primary",
-                  },
-                  {
-                    name: "Marcus Vane",
-                    service: "Executive Grooming Session",
-                    status: "In-Session",
-                    statusClass: "bg-amber-100 text-amber-800",
-                    avatarBg: "bg-secondary-fixed text-secondary",
-                  },
-                  {
-                    name: "Elena Rossi",
-                    service: "Personal Concierge Consult",
-                    status: "Completed",
-                    statusClass: "bg-gray-100 text-gray-800",
-                    avatarBg: "bg-surface-container text-outline",
-                    opacity: true,
-                  },
-                  {
-                    name: "Sebastian Cole",
-                    service: "Yacht Charter Briefing",
-                    status: "Confirmed",
-                    statusClass: "bg-emerald-100 text-emerald-800",
-                    avatarBg: "bg-primary-fixed text-primary",
-                  },
-                ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex items-start space-x-3 pb-3 border-b border-outline-variant/10 last:border-b-0 ${
-                      item.opacity ? "opacity-60" : ""
-                    }`}
-                  >
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${item.avatarBg}`}>
-                      <span className="material-symbols-outlined text-sm">person</span>
+                {liveBookings.map((item, idx) => {
+                  const statusClass = item.status === "Confirmed" ? "bg-emerald-100 text-emerald-800" :
+                                      item.status === "Completed" ? "bg-gray-100 text-gray-800" :
+                                      item.status === "In-Session" ? "bg-amber-100 text-amber-800" :
+                                      "bg-emerald-100 text-emerald-800";
+                  
+                  const avatarBg = item.avatarBg || "bg-primary-fixed text-primary";
+                  
+                  return (
+                    <div
+                      key={idx}
+                      className={`flex items-start space-x-3 pb-3 border-b border-outline-variant/10 last:border-b-0 ${
+                        item.opacity ? "opacity-60" : ""
+                      }`}
+                    >
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${avatarBg}`}>
+                        <span className="material-symbols-outlined text-sm">person</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-body-sm font-medium">{item.customerName}</p>
+                        <p className="text-label-caps text-on-surface-variant opacity-70 text-[10px]">{item.serviceName}</p>
+                        {item.date && item.time && (
+                          <p className="text-label-caps text-primary/70 text-[9px] mt-1">{item.date} • {item.time}</p>
+                        )}
+                      </div>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${statusClass}`}>
+                        {item.status}
+                      </span>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-body-sm font-medium">{item.name}</p>
-                      <p className="text-label-caps text-on-surface-variant opacity-70 text-[10px]">{item.service}</p>
-                    </div>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${item.statusClass}`}>
-                      {item.status}
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

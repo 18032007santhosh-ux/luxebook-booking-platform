@@ -1,9 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Magnet from "../components/ui/Magnet";
+import toast from "react-hot-toast";
+import { generateReceiptPDF } from "../utils/receiptGenerator";
+import { authService } from "../services/authService";
 
 export default function BookingConfirmed() {
+  const [booking, setBooking] = useState(null);
+
   useEffect(() => {
+    // Fetch latest booking from localStorage
+    const user = authService.getCurrentUser();
+    const storageKey = user ? `luxebook_reservations_${user.id}` : "luxebook_reservations";
+    const savedBookings = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    if (savedBookings.length > 0) {
+      setBooking(savedBookings[0]);
+    }
+
     // Confetti burst on load
     const container = document.body;
     const confettiElements = [];
@@ -46,6 +59,17 @@ export default function BookingConfirmed() {
     };
   }, []);
 
+  const handleDownloadReceipt = async () => {
+    try {
+      toast("Generating receipt...");
+      await generateReceiptPDF(booking);
+      toast.success("Receipt downloaded successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to generate receipt. Please try again.");
+    }
+  };
+
   return (
     <div className="font-body-md text-on-surface bg-[#F8F5F0] min-h-screen">
       {/* Subtle Background Highlights */}
@@ -62,9 +86,9 @@ export default function BookingConfirmed() {
           <div className="success-float inline-flex items-center justify-center w-32 h-32 rounded-full glass-card mb-md border-2 border-tertiary-container/30">
             <span className="material-symbols-outlined text-[64px] gold-shimmer" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
           </div>
-          <h1 className="font-headline-xl text-headline-xl text-primary mb-xs">Your Journey Awaits</h1>
+          <h1 className="font-headline-xl text-headline-xl text-primary mb-xs">Booking Confirmed</h1>
           <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg mx-auto">
-            Your reservation at the sanctuary has been confirmed. We are preparing for your arrival.
+            {booking ? `Your reservation for the ${booking.serviceName} has been secured.` : "Your reservation has been confirmed. We are preparing for your arrival."}
           </p>
         </section>
 
@@ -76,24 +100,24 @@ export default function BookingConfirmed() {
             <div className="space-y-md">
               <div className="space-y-xs">
                 <span className="font-label-caps text-label-caps text-tertiary uppercase">Service</span>
-                <h2 className="font-headline-md text-headline-md text-on-surface">Royal Thai Massage</h2>
+                <h2 className="font-headline-md text-headline-md text-on-surface">{booking?.serviceName || "Royal Thai Massage"}</h2>
               </div>
               <div className="space-y-sm">
                 <div className="flex items-center gap-sm">
-                  <span className="material-symbols-outlined text-primary">person</span>
-                  <span className="font-body-md text-body-md">Expert: <span className="font-semibold text-primary">Elena S. Volkov</span></span>
-                </div>
-                <div className="flex items-center gap-sm">
                   <span className="material-symbols-outlined text-primary">calendar_today</span>
-                  <span className="font-body-md text-body-md">Friday, October 24, 2024</span>
+                  <span className="font-body-md text-body-md">{booking?.date || "Friday, October 24, 2024"}</span>
                 </div>
                 <div className="flex items-center gap-sm">
                   <span className="material-symbols-outlined text-primary">schedule</span>
-                  <span className="font-body-md text-body-md">4:30 PM — 6:00 PM (90 min)</span>
+                  <span className="font-body-md text-body-md">{booking?.time || "4:30 PM"} ({booking?.duration || "90 Minutes"})</span>
                 </div>
                 <div className="flex items-center gap-sm">
-                  <span className="material-symbols-outlined text-primary">location_on</span>
-                  <span className="font-body-md text-body-md">The Zen Suite, Floor 42</span>
+                  <span className="material-symbols-outlined text-primary">payments</span>
+                  <span className="font-body-md text-body-md">${booking?.price || 350}.00 (Base Rate)</span>
+                </div>
+                <div className="flex items-center gap-sm">
+                  <span className="material-symbols-outlined text-primary">person</span>
+                  <span className="font-body-md text-body-md">Guest: <span className="font-semibold text-primary">{booking?.customerName || "Elena S. Volkov"}</span></span>
                 </div>
               </div>
             </div>
@@ -104,10 +128,10 @@ export default function BookingConfirmed() {
                 <img 
                   alt="QR Code" 
                   className="w-32 h-32 md:w-40 md:h-40" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXmmczNF3wp-cHRKJbof4jxOE8Igh-SIqgXjH91kwtrJ58ODZuwopIPd2z5H0eB4VcP2J2zlYUh6zaLU_wmEW-wOE0McXUFQnE6AjwIBKwz31BV97sUObTZu9vSFGMZKBNj6R_YHHJpXvNkznIhsqD3u-g1LABBQq-DqxIVLqQj2zYfOB2agb9nohSETAOTTy_s7ndFon5org7ZLeOG-TBIF4kKibATnvJDTj70zTf1jmIexDeQvZayBp8kD2nFX6Odgilsq8TaZc"
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${booking?.bookingId || "LB-77821"}&color=0F5E4D`}
                 />
               </div>
-              <span className="font-label-caps text-label-caps text-on-surface-variant">Check-in Reference: LB-77821</span>
+              <span className="font-label-caps text-label-caps text-on-surface-variant">Booking Ref: {booking?.bookingId || "LB-77821"}</span>
             </div>
           </div>
           
@@ -116,41 +140,61 @@ export default function BookingConfirmed() {
           
           {/* Primary CTAs */}
           <div className="flex flex-col sm:flex-row gap-sm w-full">
-            <Magnet padding={50} disabled={false} magnetStrength={8} wrapperClassName="flex-1" innerClassName="w-full" style={{ display: 'flex' }}>
-              <button className="w-full bg-primary-container text-on-primary font-semibold py-sm px-lg rounded-full flex items-center justify-center gap-xs hover:shadow-xl transition-all active:scale-95 border border-tertiary-container/20">
-                <span className="material-symbols-outlined">event</span>
-                Add to Calendar
-              </button>
-            </Magnet>
-            <Link to="/admin/dashboard" className="flex-1 bg-white border border-primary-container text-primary-container font-semibold py-sm px-lg rounded-full flex items-center justify-center gap-xs hover:bg-primary-container/5 transition-all active:scale-95 text-center">
-              <span className="material-symbols-outlined">dashboard</span>
-              View My Appointments
+            <Link to="/home" className="flex-1 w-full bg-primary-container text-on-primary font-semibold py-sm px-lg rounded-full flex items-center justify-center gap-xs hover:shadow-xl transition-all active:scale-95 border border-tertiary-container/20">
+              <span className="material-symbols-outlined">home</span>
+              Return Home
             </Link>
+            <Link to="/explore" className="flex-1 bg-white border border-primary-container text-primary-container font-semibold py-sm px-lg rounded-full flex items-center justify-center gap-xs hover:bg-primary-container/5 transition-all active:scale-95 text-center">
+              <span className="material-symbols-outlined">explore</span>
+              Book Another
+            </Link>
+            <button 
+              onClick={handleDownloadReceipt}
+              className="flex-1 bg-transparent border border-outline-variant/30 text-on-surface font-semibold py-sm px-lg rounded-full flex items-center justify-center gap-xs hover:bg-surface-variant/50 transition-all active:scale-95 text-center"
+              aria-label="Download Receipt"
+            >
+              <span className="material-symbols-outlined text-primary">download</span>
+              Download Receipt
+            </button>
+          </div>
+        </div>
+
+        {/* Personalized Recommendations */}
+        <div className="w-full max-w-2xl mt-8">
+          <h3 className="font-headline-md text-primary text-xl mb-4">Curated For You</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="glass-card-light p-4 rounded-xl border border-outline-variant/10 flex items-center gap-4 hover:border-gold/30 transition-colors cursor-pointer group">
+              <div className="w-16 h-16 rounded-lg bg-surface overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Massage" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+              </div>
+              <div>
+                <p className="font-headline-sm text-sm text-primary mb-1">Deep Tissue Enhancement</p>
+                <p className="font-label-caps text-[10px] text-gold tracking-widest">+ $45.00</p>
+              </div>
+            </div>
+            <div className="glass-card-light p-4 rounded-xl border border-outline-variant/10 flex items-center gap-4 hover:border-gold/30 transition-colors cursor-pointer group">
+              <div className="w-16 h-16 rounded-lg bg-surface overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1552693673-1bf958298935?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Aromatherapy" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+              </div>
+              <div>
+                <p className="font-headline-sm text-sm text-primary mb-1">Bespoke Aromatherapy</p>
+                <p className="font-label-caps text-[10px] text-gold tracking-widest">COMPLIMENTARY</p>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Secondary Actions */}
         <div className="mt-lg flex flex-wrap justify-center gap-lg">
-          <a className="flex items-center gap-xs font-body-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer group" href="#">
-            <span className="material-symbols-outlined text-sm group-hover:scale-110 transition-transform">download</span>
-            <span>Download Receipt</span>
-          </a>
-          <a className="flex items-center gap-xs font-body-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer group" href="#">
+          <Link to="/admin/dashboard" className="flex items-center gap-xs font-body-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer group">
+            <span className="material-symbols-outlined text-sm group-hover:scale-110 transition-transform">dashboard</span>
+            <span>View Admin Dashboard</span>
+          </Link>
+          <a className="flex items-center gap-xs font-body-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer group" onClick={(e) => { e.preventDefault(); toast("Concierge chat coming soon."); }}>
             <span className="material-symbols-outlined text-sm group-hover:scale-110 transition-transform">support_agent</span>
             <span>Contact Concierge</span>
           </a>
-          <a className="flex items-center gap-xs font-body-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer group" href="#">
-            <span className="material-symbols-outlined text-sm group-hover:scale-110 transition-transform">share</span>
-            <span>Share Details</span>
-          </a>
         </div>
-
-        {/* LuxeBook Logo Footer (Anchor) */}
-        <footer className="mt-xl opacity-30 select-none">
-          <Link to="/home" className="font-headline-md text-headline-md text-primary tracking-widest uppercase block cursor-pointer">
-            LuxeBook
-          </Link>
-        </footer>
       </main>
     </div>
   );
