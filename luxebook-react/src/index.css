@@ -248,3 +248,8 @@
   background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.05) 50%, transparent 100%);
   background-size: 200% 100%;
 }
+
+/* Global Scale Wrapper (90%) */
+.global-scale-wrapper {
+  zoom: 0.9;
+}

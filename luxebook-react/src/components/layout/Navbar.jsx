@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AnimatedNavigationTabs } from "../ui/AnimatedNavigationTabs";
 import { useAuth } from "../../contexts/AuthContext";
 import { membershipService } from "../../services/membershipService";
@@ -16,7 +16,15 @@ const BASE_NAV_ITEMS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const isAdmin = user?.role === "admin" || user?.email === "admin@gmail.com";
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,20 +57,22 @@ export default function Navbar() {
         <div className="h-full bg-gold/50" style={{ width: `${scrollProgress}%`, transition: 'width 0.1s ease-out' }}></div>
       </div>
 
-      <div className="flex justify-between items-center w-full px-xl max-w-container-max mx-auto">
+      <div className="flex items-center w-full max-w-container mx-auto px-8">
         {/* Brand logo */}
-        <Link to="/home" className={`font-headline-md font-semibold tracking-widest transition-colors duration-300 ${scrolled ? 'text-primary' : 'text-primary drop-shadow-md'} flex items-center gap-2`}>
-          <span className="material-symbols-outlined text-gold text-3xl">diamond</span>
-          <span className="text-2xl uppercase tracking-[0.2em]">LuxeBook</span>
-        </Link>
+        <div className="flex-1 flex justify-start">
+          <Link to="/home" className={`font-headline-md font-semibold tracking-widest transition-colors duration-300 ${scrolled ? 'text-primary' : 'text-primary drop-shadow-md'} flex items-center gap-2`}>
+            <span className="material-symbols-outlined text-gold text-3xl">diamond</span>
+            <span className="text-2xl uppercase tracking-[0.2em]">LuxeBook</span>
+          </Link>
+        </div>
 
         {/* Desktop navigation tabs */}
-        <div className="hidden md:flex items-center">
+        <div className="hidden md:flex flex-none justify-center">
           <AnimatedNavigationTabs items={navItems} />
         </div>
 
         {/* Right-side action area */}
-        <div className="flex items-center gap-md">
+        <div className="flex-1 flex justify-end items-center gap-4">
           {/* Ghost Login CTA — only shown to unauthenticated users */}
           {!isAuthenticated && (
             <Link to="/login">
@@ -84,13 +94,22 @@ export default function Navbar() {
             </button>
           </Link>
 
-          {/* Hamburger menu (mobile) */}
-          <button
-            className="w-10 h-10 rounded-full border border-outline-variant/30 flex items-center justify-center hover:bg-surface-variant transition-colors group"
-            aria-label="Open navigation menu"
-          >
-            <span className="material-symbols-outlined text-primary group-hover:text-gold transition-colors">menu</span>
-          </button>
+          {/* Admin sees original hamburger menu */}
+          {isAdmin && (
+            <span className="material-symbols-outlined text-primary cursor-pointer hover:text-gold transition-colors text-3xl">menu</span>
+          )}
+
+          {/* Logout Button — only shown to authenticated normal users */}
+          {isAuthenticated && !isAdmin && (
+            <button
+              onClick={handleLogout}
+              className="font-label-caps text-label-caps text-on-surface-variant hover:text-error border border-outline-variant/30 px-5 py-2 rounded-full hover:border-error/50 hover:shadow-[0_0_15px_rgba(239,68,68,0.15)] hover:bg-error/5 transition-all duration-300 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-error flex items-center gap-2"
+              aria-label="Logout of your account"
+            >
+              <span className="material-symbols-outlined text-sm hidden md:inline-block">logout</span>
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </nav>

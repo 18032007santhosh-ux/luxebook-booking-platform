@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Discover Luxury - LuxeBook</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #f7faf7; /* background from config */
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-filter {
+            background-color: #004537; /* primary */
+            color: #ffffff;
+            box-shadow: 0 10px 15px -3px rgba(0, 69, 55, 0.2);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed": "#3f001b",
+                      "surface-dim": "#d8dbd8",
+                      "outline-variant": "#bfc9c4",
+                      "surface-variant": "#e0e3e0",
+                      "secondary-container": "#ff97b4",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary": "#97425d",
+                      "inverse-surface": "#2d312f",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#aaf1da",
+                      "secondary-fixed": "#ffd9e1",
+                      "inverse-on-surface": "#eff1ee",
+                      "on-tertiary-fixed-variant": "#574500",
+                      "on-primary": "#ffffff",
+                      "inverse-primary": "#8ed4bf",
+                      "on-primary-fixed": "#002019",
+                      "tertiary-container": "#cca730",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#7a2b46",
+                      "secondary-fixed-dim": "#ffb1c5",
+                      "error-container": "#ffdad6",
+                      "surface": "#f7faf7",
+                      "on-surface": "#191c1b",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed-variant": "#792b46",
+                      "on-primary-container": "#8fd5bf",
+                      "surface-container-high": "#e6e9e6",
+                      "on-primary-fixed-variant": "#005141",
+                      "tertiary-fixed": "#ffe088",
+                      "tertiary-fixed-dim": "#e9c349",
+                      "tertiary": "#735c00",
+                      "on-tertiary": "#ffffff",
+                      "background": "#f7faf7",
+                      "primary": "#004537",
+                      "surface-container-low": "#f2f4f1",
+                      "primary-fixed-dim": "#8ed4bf",
+                      "outline": "#6f7975",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#0f5e4d",
+                      "surface-tint": "#206a58",
+                      "on-surface-variant": "#3f4945",
+                      "on-tertiary-container": "#4f3d00",
+                      "surface-bright": "#f7faf7",
+                      "surface-container-highest": "#e0e3e0",
+                      "on-tertiary-fixed": "#241a00",
+                      "surface-container": "#eceeeb",
+                      "on-background": "#191c1b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "sm": "12px",
+                      "container-max": "1440px",
+                      "xs": "4px",
+                      "md": "24px",
+                      "base": "8px",
+                      "lg": "48px",
+                      "xl": "80px"
+              },
+              "fontFamily": {
+                      "headline-xl": ["Playfair Display"],
+                      "label-caps": ["Inter"],
+                      "display-lg": ["Playfair Display"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Playfair Display"],
+                      "display-lg-mobile": ["Playfair Display"],
+                      "body-sm": ["Inter"],
+                      "headline-md": ["Playfair Display"]
+              },
+              "fontSize": {
+                      "headline-xl": ["48px", {"lineHeight": "56px", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                      "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-secondary/20 shadow-xl shadow-on-background/5">
+<div class="flex justify-between items-center px-lg py-md max-w-container-max mx-auto">
+<a href="index.html" class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight cursor-pointer">LuxeBook</a>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-body-md" href="index.html">Concierge</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-body-md" href="calendar_booking.html">Appointments</a>
+<a class="text-primary font-semibold font-body-md" href="explore_services.html">Discover</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-body-md" href="portfolio_management.html">Portfolio</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-transform active:scale-95">search</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-transform active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-primary transition-transform active:scale-95">account_circle</button>
+</div>
+</div>
+</header>
+<!-- Side Navigation (Desktop Drawer) -->
+<aside class="fixed left-0 top-0 h-full w-72 z-40 bg-surface/80 backdrop-blur-2xl border-r border-secondary/20 shadow-2xl shadow-on-background/10 hidden xl:flex flex-col gap-sm py-lg mt-[80px]">
+<div class="px-lg mb-lg">
+<h2 class="font-headline-md text-headline-md text-primary">Welcome, Excellence</h2>
+<p class="font-body-sm text-on-surface-variant">Your private concierge awaits</p>
+</div>
+<nav class="flex flex-col gap-xs">
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-variant/30 rounded-full mx-4 py-3 px-6 transition-all duration-300" href="index.html">
+<span class="material-symbols-outlined">diamond</span>
+<span>Concierge</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-variant/30 rounded-full mx-4 py-3 px-6 transition-all duration-300" href="calendar_booking.html">
+<span class="material-symbols-outlined">calendar_month</span>
+<span>Appointments</span>
+</a>
+<a class="flex items-center gap-md bg-primary text-on-primary rounded-full mx-4 py-3 px-6 shadow-md shadow-primary/20" href="explore_services.html">
+<span class="material-symbols-outlined">explore</span>
+<span>Discover</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-variant/30 rounded-full mx-4 py-3 px-6 transition-all duration-300" href="portfolio_management.html">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span>Portfolio</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-variant/30 rounded-full mx-4 py-3 px-6 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-4 pb-12">
+<a href="calendar_booking.html"><button class="w-full bg-primary-container text-on-primary-container py-4 rounded-full font-label-caps uppercase tracking-widest text-xs hover:shadow-lg transition-all duration-300">
+                Book New Service
+            </button></a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="pt-[120px] pb-xl px-gutter xl:pl-[320px] max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="mb-xl text-center md:text-left">
+<span class="font-label-caps text-tertiary tracking-widest uppercase mb-base block">Curated Selection</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-md">Discover Excellence</h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl">Refined services tailored for the discerning individual. From bespoke grooming to holistic wellness, explore our private collection.</p>
+</header>
+<!-- Floating Category Filters -->
+<section class="mb-lg sticky top-[90px] z-30">
+<div class="flex items-center gap-sm overflow-x-auto pb-4 no-scrollbar">
+<button class="glass-card active-filter px-8 py-3 rounded-full font-body-md border border-outline-variant/20 whitespace-nowrap transition-all">All Experiences</button>
+<button class="glass-card text-on-surface-variant hover:bg-surface-container px-8 py-3 rounded-full font-body-md border border-outline-variant/20 whitespace-nowrap transition-all">Artisan Hair</button>
+<button class="glass-card text-on-surface-variant hover:bg-surface-container px-8 py-3 rounded-full font-body-md border border-outline-variant/20 whitespace-nowrap transition-all">Advanced Facials</button>
+<button class="glass-card text-on-surface-variant hover:bg-surface-container px-8 py-3 rounded-full font-body-md border border-outline-variant/20 whitespace-nowrap transition-all">Sanctuary Spa</button>
+<button class="glass-card text-on-surface-variant hover:bg-surface-container px-8 py-3 rounded-full font-body-md border border-outline-variant/20 whitespace-nowrap transition-all">Wellness &amp; Vitality</button>
+</div>
+</section>
+<!-- Gallery Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Card 1 -->
+<div class="glass-card group rounded-[24px] overflow-hidden border border-outline-variant/10 shadow-2xl shadow-on-background/5 hover:-translate-y-2 transition-transform duration-500">
+<div class="h-80 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A luxurious high-end hair salon interior with soft, warm amber lighting. A professional stylist is performing a precision cut on a client in a minimalist, emerald green velvet chair. The environment is serene, featuring polished gold accents and clean white marble surfaces, evoking an atmosphere of quiet luxury and elite grooming services." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIUvrXGi_lKXZXyL4QlCVRdUwGcaulVdsk54fnqx-FnWdpY02HbTccJ3_i0-xIqOs-rUiCEEmMRlgmaeAHNtdXngoa1G1TKceLG2tgBIOSr0FjjfFvrP-IOlkKbB_mjJpJuAwUVjLuCqL9NfhsXkUydL4W6BCdwGdflbB7RU2uQ0Y11Y6wRqpb5ynC9B7bc5deWvqw2OebDhyY2Mi0SU5_GJx31mReA64Sv8tbsP4fbQYFCrZMXmEfZr905858Jws8S2sczvwzPuM"/>
+<div class="absolute top-4 right-4 bg-primary/90 text-white px-4 py-1 rounded-full text-xs font-label-caps backdrop-blur-md">Popular</div>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-base">
+<h3 class="font-headline-md text-headline-md text-on-surface">Signature Grooming</h3>
+<span class="text-tertiary font-bold">$185</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-lg leading-relaxed">A bespoke haircutting experience including a private consultation, essential oil scalp treatment, and artisanal styling.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-xs font-label-caps">75 Minutes</span>
+</div>
+<a href="calendar_booking.html" class="flex items-center gap-xs text-primary font-semibold hover:gap-md transition-all duration-300">
+<span class="font-label-caps text-xs">Book Now</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-card group rounded-[24px] overflow-hidden border border-outline-variant/10 shadow-2xl shadow-on-background/5 hover:-translate-y-2 transition-transform duration-500">
+<div class="h-80 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Close-up of a high-end luxury facial treatment in progress. Crystal clear glass bottles of gold-infused serum stand on a white limestone surface in the background. Soft, diffused daylight illuminates the scene, highlighting the dewy skin of a model. The palette is dominated by soft ivories, emerald greens, and rich gold highlights, creating a sense of elite aesthetic care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwJJny5ffqCmT3d4SqQG0c1inCbfM3DmDRPnvSubnhJOXV21nCGNZfurraz4zZJPpTRbavhvV96tmO7V6XJS_Jw46sBuiioebUQvuVs8SZXMVw6zR4r6q2nE9NXNYObgjI9hsA3Vhwrv44-rY-TxAFgvCqtZjI8nkep8Bnzk8JL06qHAyku-n2fJIR7ZJLyEzCK4ZUXTrlZy-NQ1kkqP-KPvvulU7beg3Xywrw8jn-QvqSDyGecfn5aUTGbxaP0JRyBUj-4bZ0M6s"/>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-base">
+<h3 class="font-headline-md text-headline-md text-on-surface">Luminous Radiance</h3>
+<span class="text-tertiary font-bold">$320</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-lg leading-relaxed">Advanced oxygen-infusion facial using rare botanical extracts and 24k gold leaf to restore immediate vitality and glow.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-xs font-label-caps">90 Minutes</span>
+</div>
+<a href="calendar_booking.html" class="flex items-center gap-xs text-primary font-semibold hover:gap-md transition-all duration-300">
+<span class="font-label-caps text-xs">Book Now</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-card group rounded-[24px] overflow-hidden border border-outline-variant/10 shadow-2xl shadow-on-background/5 hover:-translate-y-2 transition-transform duration-500">
+<div class="h-80 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A serene, luxury spa treatment room with steam rising from a hot stone arrangement on a dark slate tray. Lush tropical greenery is visible through a floor-to-ceiling glass window. The lighting is low-key and atmospheric, with flickering candle flames casting warm shadows against emerald green tiled walls. The mood is deeply tranquil and prestigious." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhw74xQy_evKeImHvzRGo7iwD4oMpg-D4aeHFjI1ouJidnsLYfYlgIGw9e4irDjDmqSPzl_ShlAvEKMkHbpdHpkkninW_jGza_tWj-AcapRCSj7MWKs80TwwFwKyPD1Hj5dtHAEK3-FPON8XxpfVGQOtWYnDIKNkKyQU0MCAxjMKPesttfLn1oI1AL5j5Dy-iZkM7lBYVQstn9w5W0yZ0dbIbyREFhoqHO8Eh8tvRc4-qKM9uOGiEdhCKUSq1A0rSm42rD0XenVB0"/>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-base">
+<h3 class="font-headline-md text-headline-md text-on-surface">Deep Sanctuary</h3>
+<span class="text-tertiary font-bold">$450</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-lg leading-relaxed">Our signature full-body hot stone massage combined with a private thermal suite experience and herbal rejuvenation.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-xs font-label-caps">120 Minutes</span>
+</div>
+<a href="calendar_booking.html" class="flex items-center gap-xs text-primary font-semibold hover:gap-md transition-all duration-300">
+<span class="font-label-caps text-xs">Book Now</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="glass-card group rounded-[24px] overflow-hidden border border-outline-variant/10 shadow-2xl shadow-on-background/5 hover:-translate-y-2 transition-transform duration-500">
+<div class="h-80 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A minimalist high-end wellness apothecary with neat rows of designer supplement bottles and herbal infusions. Soft morning light streams through linen curtains. The setting features light oak wood and cream-colored plaster walls. A sense of health, purity, and scientific precision pervades the space, highlighting luxury wellness services." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9OYbrWMo0oyl52RpAppNMbVcM5tKcdLwbD0QgjZ-mWcx7bggm4FDT1KOoIyDgGTbUnyOhQFhNrmSmZ6qNTai-Lo6FI4AnXkx1qHzdPhBKnjTZ4OrRy3olmA_TSwtBYMN-snx6NcoPgXS_V83R6ddiMU6QKaxrqACPGzj1PMy8FPKdlkCRCTCUpjiaBYC-P06ERx7P34ThUWHBGdwiFN-T5lPwVEgoBMgwY0HGSvKaOglVR-n1C8pZ97sERf3pYpWBa1Msa-Pym1w"/>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-base">
+<h3 class="font-headline-md text-headline-md text-on-surface">Vitality IV Infusion</h3>
+<span class="text-tertiary font-bold">$275</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-lg leading-relaxed">Personalized nutrient cocktail designed to enhance cognitive function, immune support, and physical performance.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-xs font-label-caps">60 Minutes</span>
+</div>
+<a href="calendar_booking.html" class="flex items-center gap-xs text-primary font-semibold hover:gap-md transition-all duration-300">
+<span class="font-label-caps text-xs">Book Now</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="glass-card group rounded-[24px] overflow-hidden border border-outline-variant/10 shadow-2xl shadow-on-background/5 hover:-translate-y-2 transition-transform duration-500">
+<div class="h-80 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Top-down view of a luxury nail care set on a white marble slab. Polished gold tools, organic oils in dark glass droppers, and a silk hand towel are arranged in a clean, editorial layout. Soft shadows give a sense of depth and three-dimensionality. The aesthetic is clean, sophisticated, and indulgent, reflecting a high-end spa manicure experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0NSeqHjUGs3GuE0afQTBOJYKv_yeNky3tA5x3IqzeNuoSTpX9_W1C1arrtc4B2QIC6E-RbRlnuRwKrjDdOqk1vXTe-DZyGpY493mTbuF-pdZd0CVS4EnfJurHIqp67gMA0B7Q6tYRlmaWlaUwHit2cjJrn-_3S7VcxROxuJ7D6d8Og2OCnB0wrYwG7BOKsU9QMSMNk5IKcBKnHeD9SFgztsOHk9xtKmtT2gzSfILinA_lJEXV2SfJ3n4cwjv_aY65sf_jRfr-C44"/>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-base">
+<h3 class="font-headline-md text-headline-md text-on-surface">Artisan Hand Ritual</h3>
+<span class="text-tertiary font-bold">$120</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-lg leading-relaxed">Comprehensive restoration for hands including organic clay mask, silk-infused soak, and precision nail design.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-xs font-label-caps">60 Minutes</span>
+</div>
+<a href="calendar_booking.html" class="flex items-center gap-xs text-primary font-semibold hover:gap-md transition-all duration-300">
+<span class="font-label-caps text-xs">Book Now</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="glass-card group rounded-[24px] overflow-hidden border border-outline-variant/10 shadow-2xl shadow-on-background/5 hover:-translate-y-2 transition-transform duration-500">
+<div class="h-80 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A macro shot of essential oil being dropped into a bowl of steaming water filled with rose petals and citrus slices. The background is a soft-focus luxury bathroom with brushed gold fixtures. The lighting is cinematic and warm, highlighting the textures and droplets. The overall mood is one of premium self-care and aromatic wellness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB978o4MN_tTFxU83mm7NOx9gp1vPafAumDHXF01ld7nmnZK1tGr8x1KZp6taZKCoiS-g8_LuvhkxBdnA-iwgvgalHGQoidbtYWnJFWQ_yHBJbuzERQNIx_UXy86aiRyxGJqKQAZVT3xwk6LNFHvOLCmvTtoMJTdOfzQRSjxeRGMyPhBZ3TZWrtjTWnedjBR34KT2nvvf-qRgcHfnXXGOwbhWpPUzvCWoY4TnvHn-fGk4sy0Cqsm5m5lTute4PARgBZZXgrXZ98ZT4"/>
+</div>
+<div class="p-8">
+<div class="flex justify-between items-start mb-base">
+<h3 class="font-headline-md text-headline-md text-on-surface">Holistic Aromatherapy</h3>
+<span class="text-tertiary font-bold">$195</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-lg leading-relaxed">A sensory journey utilizing rare essential oils sourced from the French Riviera, tailored to your specific emotional needs.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-xs font-label-caps">90 Minutes</span>
+</div>
+<a href="calendar_booking.html" class="flex items-center gap-xs text-primary font-semibold hover:gap-md transition-all duration-300">
+<span class="font-label-caps text-xs">Book Now</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface/90 backdrop-blur-xl border-t border-secondary/10 flex justify-around items-center py-4 z-50">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">diamond</span>
+<span class="text-[10px] font-label-caps">Concierge</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[10px] font-label-caps">Bookings</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="text-[10px] font-label-caps">Discover</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-label-caps">Profile</span>
+</button>
+</nav>
+<!-- FAB (Contextual) -->
+<button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 md:flex hidden group">
+<span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">chat</span>
+<div class="absolute right-full mr-4 bg-white text-on-surface px-4 py-2 rounded-lg text-sm font-semibold opacity-0 group-hover:opacity-100 whitespace-nowrap shadow-xl transition-opacity pointer-events-none">
+            Speak with Concierge
+        </div>
+</button>
+<script>
+        // Micro-interactions for Filter Tabs
+        const filters = document.querySelectorAll('.glass-card.px-8');
+        filters.forEach(filter => {
+            filter.addEventListener('click', () => {
+                filters.forEach(f => {
+                    f.classList.remove('active-filter', 'bg-primary', 'text-white');
+                    f.classList.add('text-on-surface-variant');
+                });
+                filter.classList.add('active-filter');
+                filter.classList.remove('text-on-surface-variant');
+            });
+        });
+
+        // Simple smooth scroll reveal effect for cards
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card.group').forEach(card => {
+            card.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700');
+            observer.observe(card);
+        });
+    </script>
+</body></html>

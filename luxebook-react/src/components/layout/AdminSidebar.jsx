@@ -39,13 +39,17 @@ export default function AdminSidebar({ activePage }) {
           <span className="material-symbols-outlined">dashboard</span>
           <span className="font-body-md">Overview</span>
         </Link>
+        <Link className={getLinkClass("customers")} to="/admin/customers">
+          <span className="material-symbols-outlined" style={{ fontVariationSettings: activePage === 'customers' ? "'FILL' 1" : "'FILL' 0" }}>group</span>
+          <span className="font-body-md">Customers</span>
+        </Link>
         <Link className={getLinkClass("appointments")} to="/appointments">
           <span className="material-symbols-outlined">calendar_month</span>
           <span className="font-body-md">Appointments</span>
         </Link>
         <Link className={getLinkClass("portfolio")} to="/admin/portfolio">
           <span className={`material-symbols-outlined ${activePage === 'portfolio' ? 'fill-current' : ''}`}>collections</span>
-          <span className="font-body-md">Portfolio</span>
+          <span className="font-body-md">Admin</span>
         </Link>
         <Link className={getLinkClass("staff")} to="/explore">
           <span className="material-symbols-outlined">badge</span>

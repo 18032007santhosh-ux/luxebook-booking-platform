@@ -22,11 +22,20 @@ export const authService = {
       throw new Error("Invalid credentials");
     }
 
+    let role = "member";
+    if (email === "admin@gmail.com") {
+      if (password === "admin123") {
+        role = "admin";
+      } else {
+        throw new Error("Invalid admin credentials");
+      }
+    }
+
     const mockUser = {
       id: "usr_" + Math.random().toString(36).substr(2, 9),
       name: email.split('@')[0],
       email: email,
-      role: "member"
+      role: role
     };
 
     localStorage.setItem(AUTH_KEY, "true");

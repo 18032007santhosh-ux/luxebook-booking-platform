@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aethelgard | LuxeBook Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#97425d",
+                    "surface-bright": "#f7faf7",
+                    "primary-fixed-dim": "#8ed4bf",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#2d312f",
+                    "surface-variant": "#e0e3e0",
+                    "on-primary": "#ffffff",
+                    "primary": "#004537",
+                    "on-background": "#191c1b",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#aaf1da",
+                    "on-tertiary-fixed-variant": "#574500",
+                    "on-surface-variant": "#3f4945",
+                    "on-primary-fixed": "#002019",
+                    "inverse-on-surface": "#eff1ee",
+                    "on-error-container": "#93000a",
+                    "surface-container-low": "#f2f4f1",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#d8dbd8",
+                    "on-tertiary-container": "#4f3d00",
+                    "secondary-container": "#ff97b4",
+                    "on-surface": "#191c1b",
+                    "tertiary": "#735c00",
+                    "on-secondary-fixed": "#3f001b",
+                    "background": "#f7faf7",
+                    "tertiary-fixed-dim": "#e9c349",
+                    "tertiary-container": "#cca730",
+                    "on-tertiary-fixed": "#241a00",
+                    "on-primary-fixed-variant": "#005141",
+                    "surface-container-highest": "#e0e3e0",
+                    "error-container": "#ffdad6",
+                    "surface": "#f7faf7",
+                    "surface-container": "#eceeeb",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#ffb1c5",
+                    "outline": "#6f7975",
+                    "on-secondary-container": "#7a2b46",
+                    "outline-variant": "#bfc9c4",
+                    "on-secondary-fixed-variant": "#792b46",
+                    "on-primary-container": "#8fd5bf",
+                    "secondary-fixed": "#ffd9e1",
+                    "inverse-primary": "#8ed4bf",
+                    "tertiary-fixed": "#ffe088",
+                    "surface-container-high": "#e6e9e6",
+                    "surface-tint": "#206a58",
+                    "primary-container": "#004537"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "md": "24px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "xl": "80px",
+                    "base": "8px",
+                    "lg": "48px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "label-caps": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-xl": ["Playfair Display"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+    .aurora-bg {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(124,58,237,0.6), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(6,182,212,0.6), transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(236,72,153,0.6), transparent 40%);
+    filter: blur(80px);
+    animation: auroraMove 8s ease-in-out infinite alternate;
+}
+
+@keyframes auroraMove {
+    from {
+        transform: translate(-30px, -20px);
+    }
+    to {
+        transform: translate(30px, 20px);
+    }
+}
+
+.hero-banner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    min-height: 260px;
+    background: #111827;
+}
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 10px 30px -10px rgba(30, 30, 30, 0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .gold-border { border-color: rgba(212, 175, 55, 0.3); }
+        .text-gold { color: #D4AF37; }
+        .bg-gold { background-color: #D4AF37; }
+        
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .animate-float { animation: subtle-float 4s ease-in-out infinite; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-72 fixed left-0 top-0 overflow-y-auto flex flex-col py-md px-sm border-r border-outline-variant/20 bg-surface/80 backdrop-blur-xl shadow-sm z-50">
+<div class="mb-lg px-md">
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">Aethelgard</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">Concierge Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active Tab: Overview -->
+<a class="flex items-center px-md py-3 text-primary font-bold border-r-2 border-primary bg-surface-container-low transition-all duration-300 translate-x-1" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+<span class="font-body-sm">Overview</span>
+</a>
+<a class="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="calendar_today">calendar_today</span>
+<span class="font-body-sm">Appointments</span>
+</a>
+<a class="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="payments">payments</span>
+<span class="font-body-sm">Revenue</span>
+</a>
+<a class="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="group">group</span>
+<span class="font-body-sm">Staff</span>
+</a>
+<a class="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="person_search">person_search</span>
+<span class="font-body-sm">Customers</span>
+</a>
+<a class="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="monitoring">monitoring</span>
+<span class="font-body-sm">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto px-md py-md border-t border-outline-variant/10">
+<button class="w-full bg-primary text-on-primary py-3 rounded-full font-body-sm mb-lg shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+                New Appointment
+            </button>
+<div class="space-y-1">
+<a class="flex items-center py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-body-sm">Settings</span>
+</a>
+<a class="flex items-center py-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="help_outline">help_outline</span>
+<span class="font-body-sm">Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 left-72 h-20 z-40 flex justify-between items-center px-lg backdrop-blur-xl border-b border-outline-variant/20 bg-surface/80 shadow-sm">
+<div class="flex items-center space-x-lg">
+<div class="flex space-x-md text-body-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Direct Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Documentation</a>
+</div>
+</div>
+<div class="flex items-center space-x-md">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 text-body-sm py-2 focus:ring-1 focus:ring-primary/20" placeholder="Search accounts or data..." type="text"/>
+</div>
+<div class="flex items-center space-x-sm border-l border-outline-variant/20 pl-md">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors scale-95 hover:scale-100">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="px-4 py-1.5 border border-primary text-primary rounded-full text-body-sm hover:bg-primary hover:text-on-primary transition-all">
+                    Go Live
+                </button>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-outline-variant/20">
+<img alt="Executive Profile" class="w-full h-full object-cover" data-alt="A professional close-up of a high-end business executive in a tailored charcoal suit, smiling confidently in a bright, modern corporate environment. The lighting is soft and flattering, with a blurred office background that emphasizes a luxury professional aesthetic. The overall mood is sophisticated, commanding, and welcoming." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1MCINljCYWe333WeaxSgIV5u0aNuP10O-9Ttm4SC6LU__acQsLnI-XDPL-LoUv8vXmsRcqE0VTXtxdSZo8peSUG4lNJsqf5-TixkvZ_2SjL3llTBvg1RTUl29jfX6dIgqXLGE2fd12Pgxc0VnyDIDH6KSPVsg9aL0q26iXuVDEJc0ur7pKSO9U8XI-1P9VilAazwtjgg6gr8OgRe0Ci7zORQ4bNxt1wREz6N7GAUy_zzaZoyZIxEM3wlTGNaU6hEbquux0Ek0Np0"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-72 pt-20 min-h-screen px-lg pb-xl">
+<div class="max-w-[1200px] mx-auto py-lg">
+<!-- Header Section -->
+<div class="hero-banner mb-lg">
+
+    <div class="aurora-bg"></div>
+
+    <div class="relative z-10 p-10">
+        <span class="px-4 py-2 bg-white/10 text-white rounded-full text-sm">
+            LuxeBook Analytics
+        </span>
+
+        <h2 class="text-5xl font-bold text-white mt-4">
+            Business Intelligence
+        </h2>
+
+        <p class="text-white/80 text-lg mt-3 max-w-2xl">
+            Welcome back, Director. Here is your enterprise performance summary
+            and operational insights for today.
+        </p>
+
+        <button class="mt-6 px-6 py-3 rounded-full bg-white text-black font-semibold hover:scale-105 transition">
+            View Analytics
+        </button>
+    </div>
+
+</div>
+<!-- Key Metrics Row -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md mb-lg">
+<div class="glass-card p-md rounded-xl animate-float" style="animation-delay: 0.1s;">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-2 rounded-lg" data-icon="payments">payments</span>
+<span class="text-emerald-600 text-label-caps flex items-center">
+<span class="material-symbols-outlined text-sm mr-1" data-icon="trending_up">trending_up</span> +12%
+                        </span>
+</div>
+<p class="text-label-caps text-on-surface-variant opacity-70 mb-1">Monthly Revenue</p>
+<h3 class="font-headline-md text-primary">$142,500</h3>
+</div>
+<div class="glass-card p-md rounded-xl animate-float" style="animation-delay: 0.2s;">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-tertiary bg-tertiary-fixed p-2 rounded-lg" data-icon="calendar_month">calendar_month</span>
+<span class="text-on-surface-variant text-label-caps">This Month</span>
+</div>
+<p class="text-label-caps text-on-surface-variant opacity-70 mb-1">Total Appointments</p>
+<h3 class="font-headline-md text-primary">842</h3>
+</div>
+<div class="glass-card p-md rounded-xl animate-float" style="animation-delay: 0.3s;">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-secondary bg-secondary-fixed p-2 rounded-lg" data-icon="workspace_premium">workspace_premium</span>
+<span class="text-on-surface-variant text-label-caps">Platinum</span>
+</div>
+<p class="text-label-caps text-on-surface-variant opacity-70 mb-1">New Memberships</p>
+<h3 class="font-headline-md text-primary">48 Active</h3>
+</div>
+<div class="glass-card p-md rounded-xl animate-float" style="animation-delay: 0.4s;">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-2 rounded-lg" data-icon="analytics">analytics</span>
+<span class="text-on-surface-variant text-label-caps">Avg Value</span>
+</div>
+<p class="text-label-caps text-on-surface-variant opacity-70 mb-1">Booking Value</p>
+<h3 class="font-headline-md text-primary">$168.00</h3>
+</div>
+</div>
+<!-- Main Section: Two Columns -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md mb-lg">
+<!-- Left: Revenue Growth Chart -->
+<div class="lg:col-span-2 glass-card p-lg rounded-xl flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-lg">
+<div>
+<h4 class="font-headline-md text-primary">Revenue Growth</h4>
+<p class="text-body-sm text-on-surface-variant">Annualized projected growth performance</p>
+</div>
+<div class="flex space-x-sm">
+<span class="px-3 py-1 bg-primary text-on-primary rounded-full text-label-caps">Weekly</span>
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant rounded-full text-label-caps cursor-pointer hover:bg-surface-container-high transition-colors">Monthly</span>
+</div>
+</div>
+<div class="flex-1 relative flex items-end justify-between px-4 pb-8 border-l border-b border-outline-variant/30">
+<!-- Simulated Chart Content -->
+<div class="absolute inset-0 top-12 left-4 right-4 pointer-events-none">
+<svg class="w-full h-full preserve-3d" viewbox="0 0 100 40">
+<path d="M0 35 Q 25 30, 40 20 T 70 15 T 100 5" fill="none" stroke="#D4AF37" stroke-width="0.5"></path>
+<path d="M0 35 Q 25 30, 40 20 T 70 15 T 100 5 V 40 H 0 Z" fill="url(#emerald-gradient)" opacity="0.15"></path>
+<defs>
+<lineargradient id="emerald-gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#0F5E4D;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#0F5E4D;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<div class="text-label-caps text-on-surface-variant opacity-40">Jan</div>
+<div class="text-label-caps text-on-surface-variant opacity-40">Feb</div>
+<div class="text-label-caps text-on-surface-variant opacity-40">Mar</div>
+<div class="text-label-caps text-on-surface-variant opacity-40">Apr</div>
+<div class="text-label-caps text-on-surface-variant opacity-40">May</div>
+<div class="text-label-caps text-on-surface-variant opacity-40">Jun</div>
+</div>
+</div>
+<!-- Right: Live Appointment Feed -->
+<div class="glass-card p-lg rounded-xl flex flex-col h-[400px]">
+<div class="flex justify-between items-center mb-md">
+<h4 class="font-headline-md text-primary">Live Feed</h4>
+<span class="material-symbols-outlined text-primary text-sm animate-pulse" data-icon="circle" style="font-variation-settings: 'FILL' 1;">circle</span>
+</div>
+<div class="flex-1 overflow-y-auto space-y-4 pr-2">
+<!-- Feed Item -->
+<div class="flex items-start space-x-3 pb-3 border-b border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="person">person</span>
+</div>
+<div class="flex-1">
+<p class="text-body-sm font-medium">Julianna Thorne</p>
+<p class="text-label-caps text-on-surface-variant opacity-70">Deep Tissue Spa Therapy</p>
+</div>
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-bold">Confirmed</span>
+</div>
+<div class="flex items-start space-x-3 pb-3 border-b border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="person">person</span>
+</div>
+<div class="flex-1">
+<p class="text-body-sm font-medium">Marcus Vane</p>
+<p class="text-label-caps text-on-surface-variant opacity-70">Executive Grooming Session</p>
+</div>
+<span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full text-[10px] font-bold">In-Session</span>
+</div>
+<div class="flex items-start space-x-3 pb-3 border-b border-outline-variant/10 opacity-60">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="person">person</span>
+</div>
+<div class="flex-1">
+<p class="text-body-sm font-medium">Elena Rossi</p>
+<p class="text-label-caps text-on-surface-variant opacity-70">Personal Concierge Consult</p>
+</div>
+<span class="px-2 py-0.5 bg-gray-100 text-gray-800 rounded-full text-[10px] font-bold">Completed</span>
+</div>
+<div class="flex items-start space-x-3 pb-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="person">person</span>
+</div>
+<div class="flex-1">
+<p class="text-body-sm font-medium">Sebastian Cole</p>
+<p class="text-label-caps text-on-surface-variant opacity-70">Yacht Charter Briefing</p>
+</div>
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-bold">Confirmed</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md">
+<!-- Top Performing Services -->
+<div class="lg:col-span-2 glass-card p-lg rounded-xl">
+<h4 class="font-headline-md text-primary mb-lg">Top Performing Services</h4>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-md">
+<div class="text-center group">
+<div class="aspect-square rounded-xl overflow-hidden mb-3 border border-outline-variant/20 group-hover:gold-border transition-all">
+<img alt="Spa Therapy" class="w-full h-full object-cover" data-alt="A tranquil, high-end luxury spa treatment room with soft lighting, warm wooden accents, and stacked stone walls. An aesthetic composition of aromatic oils, fresh white towels, and a single orchid. The vibe is quiet luxury, serene, and ultra-professional, following a palette of ivory, sage green, and natural wood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfuqkjNHhRuBFeCKEUG9jxlQzrDP9d7rRjjVDQMDvCwaqeL-AE85hAlckwSjHiQh0JfVr4kjxmilKZif7OaQRxov6dJhbHimzTkFsUtIjHMINeQsMdi9Oq4FDQn3V_oPhta3wIwT_ZIl_YA5itrhRWQhxoem641lmKHEe9GPpcfCN2_4-QiEy2CKpXgWnP0U3XArw3bAQCoyW6_PB4PHVevy_XKupb6gcl2m2ZaZvIDWXrsRzMD_i0v1l5zB7RsTLIyYZIp6c666k"/>
+</div>
+<p class="text-body-sm font-medium">Spa Therapy</p>
+<p class="text-label-caps text-gold">248 bookings</p>
+</div>
+<div class="text-center group">
+<div class="aspect-square rounded-xl overflow-hidden mb-3 border border-outline-variant/20 group-hover:gold-border transition-all">
+<img alt="Grooming" class="w-full h-full object-cover" data-alt="An upscale, modern gentleman's barber shop with dark leather chairs, marble countertops, and polished brass fixtures. The interior is sophisticated with low-key, moody lighting and refined decor. The image highlights a sense of exclusive craftsmanship and bespoke service in a premium city environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVbUZndO6pxJjNgeNCG9nOQQkBqQ6H74d92zJA101bTg07mZqihLiirQHhUWviZnYH5JwNIfrcwEp250meVVVP_dwVoZ39JoW6OVNW8uwuzucrSHZ78ZnjwwfDBU1Mzyalc5yNh29Le_4sH2EH5JbzaHKr7QAr6-3-aEgoPLUtiPUNCb2YSa1uKVXNC1omXYvjKWdSVy8sNh-lYSjekp_Qi-segwSL6El1uDNNRfoMwl8qvZVyCaHyZk4PUo-6fo2UYL_amSs_lJY"/>
+</div>
+<p class="text-body-sm font-medium">Elite Grooming</p>
+<p class="text-label-caps text-gold">192 bookings</p>
+</div>
+<div class="text-center group">
+<div class="aspect-square rounded-xl overflow-hidden mb-3 border border-outline-variant/20 group-hover:gold-border transition-all">
+<img alt="Consulting" class="w-full h-full object-cover" data-alt="A bright, minimalist executive boardroom with large floor-to-ceiling windows overlooking a sleek urban skyline. A long polished wooden table and designer leather chairs define the space. The lighting is crisp and natural, emphasizing a high-stakes, professional atmosphere of clarity and luxury consulting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC__a68Z0rCnkhznPdRNDyDUooJcCfmT7kDmXtjc1Wnnc2QkzOFYwSMvVCAiDSjtT5cWjJYZ6fv4wHl67k8pSFrl1A30fLNUzomBBS8YKTrfcTietLQb9zgdnTnGQ-oizW77TBbmzegqXE4PbnPvyVyHV4erpvqRV_pcfjfQk5QXmWa4ReU4GjECcfkJrXiNrlFVj0c99pg9Oiux4ohWPsVEcSfzM8Rvh7Q4wjikGKDnB7zS4Rr4sO19_T-7ypzBdDmKi-a1hNH3iA"/>
+</div>
+<p class="text-body-sm font-medium">Concierge VIP</p>
+<p class="text-label-caps text-gold">156 bookings</p>
+</div>
+<div class="text-center group">
+<div class="aspect-square rounded-xl overflow-hidden mb-3 border border-outline-variant/20 group-hover:gold-border transition-all">
+<img alt="Yacht Services" class="w-full h-full object-cover" data-alt="A sleek, modern luxury yacht interior with pristine white finishes, navy blue accents, and golden trimmings. Sunlight reflects off the calm water through panoramic windows. The aesthetic is nautical luxury, high-end travel, and exclusive resort living, captured with professional architectural photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd-flzmho9xunYPN_x4HbWfGHhyI2I0s3YY7sDPuu50YUz6yjDaB3DxoIFok9FVOZF4uILanFl369IJdJPxzZCreWn44tPNkfzZmLe3nl8jDYSK5Uq4CNunUwpdReQpyWMt21e8oFbUbcGyaXqjvtLBC4o0kH6fGHee5VWzYsFye6LCFrxihnA-mhv0OWJIKu4A5C7AbwlDnxNYESXcqOtWguqF1s_TafmOmO-wyt9WuL_5raQAVijDl8H2oUwGncZbHcn5YyJqDA"/>
+</div>
+<p class="text-body-sm font-medium">Charter Prep</p>
+<p class="text-label-caps text-gold">124 bookings</p>
+</div>
+</div>
+</div>
+<!-- Customer Sentiment -->
+<div class="glass-card p-lg rounded-xl relative overflow-hidden">
+<h4 class="font-headline-md text-primary mb-md">Sentiment</h4>
+<div class="flex justify-center items-center h-48 relative">
+<!-- Radar Chart Placeholder -->
+<div class="w-32 h-32 rounded-full border-2 border-outline-variant/20 flex items-center justify-center">
+<div class="w-24 h-24 rounded-full border-2 border-primary/20 flex items-center justify-center">
+<div class="w-16 h-16 rounded-full border-2 border-gold/40"></div>
+</div>
+<svg class="absolute inset-0 w-full h-full p-8" viewbox="0 0 100 100">
+<polygon fill="rgba(15, 94, 77, 0.1)" points="50,10 90,40 75,90 25,90 10,40" stroke="#0F5E4D" stroke-width="1"></polygon>
+</svg>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm mt-4">
+<div class="text-center">
+<p class="text-[10px] text-label-caps text-on-surface-variant">Quality</p>
+<p class="text-body-sm font-bold text-primary">9.8/10</p>
+</div>
+<div class="text-center">
+<p class="text-[10px] text-label-caps text-on-surface-variant">Punctuality</p>
+<p class="text-body-sm font-bold text-primary">9.4/10</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interaction script -->
+<script>
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+                card.style.borderColor = 'rgba(212, 175, 55, 0.5)';
+                card.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.borderColor = 'rgba(212, 175, 55, 0.2)';
+            });
+        });
+    </script>
+</body></html>
