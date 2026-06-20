@@ -107,6 +107,13 @@ export default function Dashboard() {
           </Link>
           <Link
             className="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300"
+            to="/admin/customers"
+          >
+            <span className="material-symbols-outlined mr-3">group</span>
+            <span className="font-body-sm">Customers</span>
+          </Link>
+          <Link
+            className="flex items-center px-md py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-all duration-300"
             to="/appointments"
           >
             <span className="material-symbols-outlined mr-3">calendar_today</span>

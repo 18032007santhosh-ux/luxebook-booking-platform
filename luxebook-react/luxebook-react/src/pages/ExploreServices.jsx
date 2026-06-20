@@ -43,7 +43,7 @@ export default function ExploreServices() {
             <span className="material-symbols-outlined">explore</span>
             <span>Discover</span>
           </Link>
-          <Link className="flex items-center gap-md text-on-surface-variant hover:bg-surface-variant/30 rounded-full mx-4 py-3 px-6 transition-all duration-300" to="/admin/portfolio">
+          <Link className="flex items-center gap-md text-on-surface-variant hover:bg-surface-variant/30 rounded-full mx-4 py-3 px-6 transition-all duration-300" to="/customer-portfolio">
             <span className="material-symbols-outlined">auto_awesome</span>
             <span>Portfolio</span>
           </Link>
