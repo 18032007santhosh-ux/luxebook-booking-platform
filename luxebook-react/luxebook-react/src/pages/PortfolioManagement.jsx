@@ -134,9 +134,10 @@ export default function PortfolioManagement() {
     setIsModalOpen(false);
   };
 
-  const filteredItems = items.filter((item) => {
+  const filteredItems = (Array.isArray(items) ? items : []).filter((item) => {
+    if (!item) return false;
     const matchesCategory = selectedCategory === "all" || item.category === selectedCategory;
-    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = item.title ? item.title.toLowerCase().includes(searchQuery.toLowerCase()) : false;
     return matchesCategory && matchesSearch;
   });
 
@@ -263,7 +264,7 @@ export default function PortfolioManagement() {
                 <span className="material-symbols-outlined text-primary/40">visibility</span>
               </div>
               <div className="flex items-end gap-xs">
-                <p className="font-display-lg text-headline-xl leading-none text-2xl font-bold">{items.length * 2.4}k</p>
+                <p className="font-display-lg text-headline-xl leading-none text-2xl font-bold">{(Array.isArray(items) ? items.length : 0) * 2.4}k</p>
                 <span className="text-emerald-green font-bold text-body-sm mb-1 text-sm">+8%</span>
               </div>
             </div>
@@ -284,7 +285,7 @@ export default function PortfolioManagement() {
               </div>
               <div className="flex items-end gap-xs">
                 <p className="font-display-lg text-headline-xl leading-none text-2xl font-bold">
-                  {items.filter((item) => item.isFeatured).length}/12
+                  {(Array.isArray(items) ? items : []).filter((item) => item && item.isFeatured).length}/12
                 </p>
                 <span className="text-on-surface-variant/40 text-body-sm mb-1 text-sm">Active</span>
               </div>

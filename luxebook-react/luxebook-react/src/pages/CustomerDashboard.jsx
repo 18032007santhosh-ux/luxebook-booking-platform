@@ -161,7 +161,7 @@ export default function CustomerDashboard() {
             <p className="font-label-caps text-xs text-on-surface-variant uppercase tracking-widest mb-1">Status</p>
             <p className="font-headline-md text-primary text-xl flex items-center gap-2 mb-4">
               <span className="material-symbols-outlined text-gold">diamond</span>
-              {currentMembership ? currentMembership.tier.toUpperCase() : "STANDARD"}
+              {currentMembership ? (currentMembership.id || currentMembership.name || "").toUpperCase() : "STANDARD"}
             </p>
             <div className="flex gap-md">
               <div>
