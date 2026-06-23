@@ -6,7 +6,8 @@ require('dotenv').config();
 const connectionString = process.env.DATABASE_URL;
 
 async function run() {
-  console.log('Connecting to PostgreSQL database at:', connectionString);
+  const maskedConn = connectionString ? connectionString.replace(/:([^:@]+)@/, ':****@') : 'undefined';
+  console.log('Connecting to PostgreSQL database at:', maskedConn);
   const client = new Client({ connectionString });
   
   try {
