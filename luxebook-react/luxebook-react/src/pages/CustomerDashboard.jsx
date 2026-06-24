@@ -6,6 +6,7 @@ import LuxuryBadge from "../components/ui/LuxuryBadge";
 import { generateReceiptPDF } from "../utils/receiptGenerator";
 import { useAuth } from "../contexts/AuthContext";
 import { membershipService } from "../services/membershipService";
+import { bookingService } from "../services/bookingService";
 import toast from "react-hot-toast";
 
 export default function CustomerDashboard() {
@@ -19,21 +20,20 @@ export default function CustomerDashboard() {
 
   const currentMembership = membershipService.getActiveMembership();
 
-  useEffect(() => {
-    if (user) {
-      const storageKey = `luxebook_reservations_${user.id}`;
-      const storedBookings = JSON.parse(localStorage.getItem(storageKey) || "[]");
-      
-      const processedBookings = storedBookings.map(b => {
+  const loadData = async () => {
+    if (!user) return;
+    try {
+      const dataBookings = await bookingService.getBookings(user.id, false);
+      const processedBookings = dataBookings.map(b => {
         if (b.status === "cancelled") return b;
         
         let parsedDate;
         try {
           if (b.date && b.date.includes(",")) {
-             const withoutWeekday = b.date.split(", ").slice(1).join(", ");
-             parsedDate = new Date(`${withoutWeekday} ${b.time}`);
+            const withoutWeekday = b.date.split(", ").slice(1).join(", ");
+            parsedDate = new Date(`${withoutWeekday} ${b.time}`);
           } else {
-             parsedDate = new Date(b.date);
+            parsedDate = new Date(b.date);
           }
         } catch(e) {
           parsedDate = new Date();
@@ -47,27 +47,17 @@ export default function CustomerDashboard() {
       });
       setBookings(processedBookings);
 
-      const reviewsKey = `luxebook_reviews_${user.id}`;
-      const storedReviews = JSON.parse(localStorage.getItem(reviewsKey) || "[]");
-      setReviews(storedReviews);
+      const dataReviews = await bookingService.getReviews(user.id);
+      setReviews(dataReviews);
+    } catch (e) {
+      console.error("Failed to load dashboard data:", e);
+      toast.error("Failed to load dashboard records.");
     }
+  };
+
+  useEffect(() => {
+    loadData();
   }, [user]);
-
-  const saveBookings = (newBookings) => {
-    setBookings(newBookings);
-    if (user) {
-      const storageKey = `luxebook_reservations_${user.id}`;
-      localStorage.setItem(storageKey, JSON.stringify(newBookings));
-    }
-  };
-
-  const saveReviews = (newReviews) => {
-    setReviews(newReviews);
-    if (user) {
-      const reviewsKey = `luxebook_reviews_${user.id}`;
-      localStorage.setItem(reviewsKey, JSON.stringify(newReviews));
-    }
-  };
 
   const handleDownloadReceipt = async (booking) => {
     try {
@@ -87,43 +77,37 @@ export default function CustomerDashboard() {
     }
   };
 
-  const confirmCancellation = () => {
+  const confirmCancellation = async () => {
     if (!cancelModalBookingId) return;
-    const newBookings = bookings.map(b => {
-      const id = b.bookingId || b.id;
-      if (id === cancelModalBookingId) {
-        return { ...b, status: "cancelled", cancelledAt: new Date().toISOString() };
-      }
-      return b;
-    });
-    saveBookings(newBookings);
-    toast.success("Booking cancelled successfully.");
-    setCancelModalBookingId(null);
+    try {
+      await bookingService.cancelBooking(cancelModalBookingId);
+      toast.success("Booking cancelled successfully.");
+      setCancelModalBookingId(null);
+      loadData();
+    } catch (e) {
+      toast.error("Failed to cancel booking.");
+    }
   };
 
-  const handleSubmitReview = (e) => {
+  const handleSubmitReview = async (e) => {
     e.preventDefault();
-    if (!activeReviewBookingId) return;
+    if (!activeReviewBookingId || !user) return;
     
     if (ratingValue === 0) {
       toast.error("Please select a star rating before submitting.");
       return;
     }
 
-    const existingIndex = reviews.findIndex(r => r.bookingId === activeReviewBookingId);
-    let newReviews;
-    if (existingIndex >= 0) {
-      newReviews = [...reviews];
-      newReviews[existingIndex] = { bookingId: activeReviewBookingId, rating: ratingValue, comment: feedbackText };
-      toast.success("Feedback updated successfully.");
-    } else {
-      newReviews = [...reviews, { bookingId: activeReviewBookingId, rating: ratingValue, comment: feedbackText }];
+    try {
+      await bookingService.submitReview(activeReviewBookingId, user.id, ratingValue, feedbackText);
       toast.success("Feedback submitted successfully.");
+      setActiveReviewBookingId(null);
+      setFeedbackText("");
+      setRatingValue(0);
+      loadData();
+    } catch (e) {
+      toast.error("Failed to submit feedback.");
     }
-    saveReviews(newReviews);
-    setActiveReviewBookingId(null);
-    setFeedbackText("");
-    setRatingValue(0);
   };
 
   const openReviewModal = (bookingId) => {

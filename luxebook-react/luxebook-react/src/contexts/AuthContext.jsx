@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { authService } from "../services/authService";
+import { membershipService } from "../services/membershipService";
 
 const AuthContext = createContext(null);
 
@@ -9,19 +10,28 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check initial auth state on mount
-    const authStatus = authService.isAuthenticated();
-    setIsAuthenticated(authStatus);
-    if (authStatus) {
-      setUser(authService.getCurrentUser());
-    }
-    setLoading(false);
+    const checkAuth = async () => {
+      const authStatus = authService.isAuthenticated();
+      setIsAuthenticated(authStatus);
+      if (authStatus) {
+        const currentUser = authService.getCurrentUser();
+        setUser(currentUser);
+        if (currentUser) {
+          // Sync active membership status in background
+          membershipService.syncActiveMembership(currentUser.id).catch(console.error);
+        }
+      }
+      setLoading(false);
+    };
+    checkAuth();
   }, []);
 
   const login = async (email, password) => {
     const userData = await authService.login(email, password);
     setUser(userData);
     setIsAuthenticated(true);
+    // Sync membership on successful login
+    await membershipService.syncActiveMembership(userData.id).catch(console.error);
     return userData;
   };
 

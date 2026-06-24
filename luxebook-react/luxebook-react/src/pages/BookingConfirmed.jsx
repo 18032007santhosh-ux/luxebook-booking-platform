@@ -4,18 +4,25 @@ import Magnet from "../components/ui/Magnet";
 import toast from "react-hot-toast";
 import { generateReceiptPDF } from "../utils/receiptGenerator";
 import { authService } from "../services/authService";
+import { bookingService } from "../services/bookingService";
 
 export default function BookingConfirmed() {
   const [booking, setBooking] = useState(null);
 
   useEffect(() => {
-    // Fetch latest booking from localStorage
-    const user = authService.getCurrentUser();
-    const storageKey = user ? `luxebook_reservations_${user.id}` : "luxebook_reservations";
-    const savedBookings = JSON.parse(localStorage.getItem(storageKey) || "[]");
-    if (savedBookings.length > 0) {
-      setBooking(savedBookings[0]);
+    // Fetch latest booking from Supabase
+    async function loadLatestBooking() {
+      try {
+        const user = authService.getCurrentUser();
+        const dataBookings = await bookingService.getBookings(user?.id || null, false);
+        if (dataBookings.length > 0) {
+          setBooking(dataBookings[0]);
+        }
+      } catch (e) {
+        console.error("Failed to load latest booking:", e);
+      }
     }
+    loadLatestBooking();
 
     // Confetti burst on load
     const container = document.body;

@@ -1,86 +1,132 @@
-/**
- * Simulated Authentication Service
- * Designed to be easily replaced by Firebase, Supabase, or JWT OAuth later.
- */
-
-const AUTH_KEY = "luxebook_auth";
-const USER_KEY = "luxebook_user";
+import { supabase } from './supabaseClient';
 
 export const authService = {
   /**
-   * Simulates a secure login.
+   * Performs Supabase login, falls back to signUp/auto-registration if user is not found.
    * @param {string} email 
    * @param {string} password 
    * @returns {Promise<Object>}
    */
   login: async (email, password) => {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Simulate basic validation
     if (!email || !password) {
       throw new Error("Invalid credentials");
     }
 
-    let role = "member";
-    if (email === "admin@gmail.com") {
-      if (password === "admin123") {
-        role = "admin";
+    let sessionData = null;
+    let authError = null;
+
+    // 1. Try signing in
+    const res = await supabase.auth.signInWithPassword({ email, password });
+    sessionData = res.data;
+    authError = res.error;
+
+    // 2. Auto-signup on failure
+    if (authError) {
+      if (authError.message.includes("Invalid login credentials") || authError.status === 400) {
+        const signUpRes = await supabase.auth.signUp({ email, password });
+        if (signUpRes.error) {
+          throw new Error(signUpRes.error.message);
+        }
+        sessionData = signUpRes.data;
       } else {
-        throw new Error("Invalid admin credentials");
+        throw new Error(authError.message);
       }
     }
 
-    const mockUser = {
-      id: "usr_" + Math.random().toString(36).substr(2, 9),
-      name: email.split('@')[0],
-      email: email,
-      role: role
+    const authUser = sessionData.user;
+    if (!authUser) {
+      throw new Error("Authentication failed: No user session was created.");
+    }
+
+    // 3. Fetch or create record in public.users
+    const { data: profile, error: profileErr } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', authUser.id)
+      .maybeSingle();
+
+    let userRole = email === 'admin@gmail.com' ? 'admin' : 'member';
+    let finalProfile = profile;
+
+    if (!profile) {
+      const { data: newProfile, error: insertErr } = await supabase
+        .from('users')
+        .insert({
+          id: authUser.id,
+          name: email.split('@')[0],
+          email: email,
+          role: userRole
+        })
+        .select()
+        .single();
+      
+      if (insertErr) {
+        console.error("Error creating user profile in database:", insertErr);
+      }
+      finalProfile = newProfile;
+    } else {
+      await supabase.from('users').update({ last_login_at: new Date().toISOString() }).eq('id', authUser.id);
+    }
+
+    const userData = {
+      id: authUser.id,
+      name: finalProfile?.name || email.split('@')[0],
+      email: authUser.email,
+      role: finalProfile?.role || userRole,
+      avatar_url: finalProfile?.avatar_url
     };
 
-    localStorage.setItem(AUTH_KEY, "true");
-    localStorage.setItem(USER_KEY, JSON.stringify(mockUser));
-
-    return mockUser;
+    localStorage.setItem("luxebook_session_user", JSON.stringify(userData));
+    return userData;
   },
 
   /**
-   * Logs out the user and clears secure storage.
+   * Logs out the user.
    */
-  logout: () => {
-    localStorage.removeItem(AUTH_KEY);
-    localStorage.removeItem(USER_KEY);
+  logout: async () => {
+    await supabase.auth.signOut();
+    localStorage.removeItem("luxebook_session_user");
   },
 
   /**
-   * Checks if a valid session exists.
-   * @returns {boolean}
+   * Checks if session user exists.
    */
   isAuthenticated: () => {
-    return localStorage.getItem(AUTH_KEY) === "true";
+    return localStorage.getItem("luxebook_session_user") !== null;
   },
 
   /**
-   * Retrieves the current user profile.
-   * @returns {Object|null}
+   * Gets current session user.
    */
   getCurrentUser: () => {
-    const user = localStorage.getItem(USER_KEY);
+    const user = localStorage.getItem("luxebook_session_user");
     return user ? JSON.parse(user) : null;
   },
 
   /**
-   * Updates the current user profile.
-   * @param {Object} updates
-   * @returns {Object|null}
+   * Updates user profile info in Supabase.
    */
-  updateUser: (updates) => {
-    const user = authService.getCurrentUser();
-    if (user) {
-      const updatedUser = { ...user, ...updates };
-      localStorage.setItem(USER_KEY, JSON.stringify(updatedUser));
-      return updatedUser;
+  updateUser: async (updates) => {
+    const cachedUser = authService.getCurrentUser();
+    if (!cachedUser) return null;
+
+    const { data, error } = await supabase
+      .from('users')
+      .update({
+        name: updates.name,
+        phone: updates.phone,
+        avatar_url: updates.avatar_url
+      })
+      .eq('id', cachedUser.id)
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(error.message);
     }
-    return null;
+
+    const updatedUser = { ...cachedUser, ...updates, name: data.name, phone: data.phone, avatar_url: data.avatar_url };
+    localStorage.setItem("luxebook_session_user", JSON.stringify(updatedUser));
+    return updatedUser;
   }
 };

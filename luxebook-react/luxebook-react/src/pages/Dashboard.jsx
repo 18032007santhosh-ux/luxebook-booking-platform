@@ -34,9 +34,18 @@ const dashboardStyles = `
   }
 `;
 
+import { bookingService } from "../services/bookingService";
+import { supabase } from "../services/supabaseClient";
+
 export default function Dashboard() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [liveBookings, setLiveBookings] = useState([]);
+  const [metrics, setMetrics] = useState({
+    revenue: "$0",
+    appointments: "0",
+    memberships: "0 Active",
+    avgValue: "$0"
+  });
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -47,41 +56,48 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const user = authService.getCurrentUser();
-    const storageKey = user ? `luxebook_reservations_${user.id}` : "luxebook_reservations";
-    const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
-    if (saved.length > 0) {
-      setLiveBookings(saved);
-    } else {
-      // Fallback to demo data
-      setLiveBookings([
-        {
-          customerName: "Julianna Thorne",
-          serviceName: "Deep Tissue Spa Therapy",
-          status: "Confirmed",
-          avatarBg: "bg-primary-fixed text-primary"
-        },
-        {
-          customerName: "Marcus Vane",
-          serviceName: "Executive Grooming Session",
-          status: "In-Session",
-          avatarBg: "bg-secondary-fixed text-secondary"
-        },
-        {
-          customerName: "Elena Rossi",
-          serviceName: "Personal Concierge Consult",
-          status: "Completed",
-          avatarBg: "bg-surface-container text-outline",
-          opacity: true
-        },
-        {
-          customerName: "Sebastian Cole",
-          serviceName: "Yacht Charter Briefing",
-          status: "Confirmed",
-          avatarBg: "bg-primary-fixed text-primary"
-        }
-      ]);
+    async function loadDashboardData() {
+      try {
+        const bookings = await bookingService.getBookings(null, true);
+        
+        // Map bookings for feed
+        const mappedBookings = bookings.map(b => ({
+          customerName: b.customerName || "Valued Guest",
+          serviceName: b.serviceName,
+          status: b.status.charAt(0).toUpperCase() + b.status.slice(1),
+          date: b.date,
+          time: b.time,
+          avatarBg: b.status === "completed" ? "bg-surface-container text-outline" : "bg-primary-fixed text-primary",
+          opacity: b.status === "cancelled"
+        }));
+        setLiveBookings(mappedBookings);
+
+        // Fetch memberships count
+        const { count: activeCount, error: countErr } = await supabase
+          .from('memberships')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'active');
+        
+        const membershipsCount = countErr ? 0 : activeCount;
+
+        // Calculate KPIs
+        const nonCancelled = bookings.filter(b => b.status !== 'cancelled');
+        const totalRevenue = nonCancelled.reduce((sum, b) => sum + b.price, 0);
+        const totalAppts = bookings.length;
+        const avgValue = nonCancelled.length > 0 ? Math.round(totalRevenue / nonCancelled.length) : 0;
+
+        setMetrics({
+          revenue: `$${totalRevenue.toLocaleString()}`,
+          appointments: totalAppts.toString(),
+          memberships: `${membershipsCount} Active`,
+          avgValue: `$${avgValue.toLocaleString()}`
+        });
+
+      } catch (e) {
+        console.error("Error loading admin dashboard stats:", e);
+      }
     }
+    loadDashboardData();
   }, []);
 
   return (
@@ -224,9 +240,9 @@ export default function Dashboard() {
                 id: 1,
                 icon: "payments",
                 title: "Monthly Revenue",
-                value: "$142,500",
-                change: "+12%",
-                changeIcon: "trending_up",
+                value: metrics.revenue,
+                change: "Live DB",
+                changeIcon: "sync",
                 iconClass: "text-primary bg-primary-fixed",
                 changeClass: "text-emerald-600",
               },
@@ -234,8 +250,8 @@ export default function Dashboard() {
                 id: 2,
                 icon: "calendar_month",
                 title: "Total Appointments",
-                value: "842",
-                change: "This Month",
+                value: metrics.appointments,
+                change: "All Devices",
                 iconClass: "text-tertiary bg-tertiary-fixed",
                 changeClass: "text-on-surface-variant",
               },
@@ -243,8 +259,8 @@ export default function Dashboard() {
                 id: 3,
                 icon: "workspace_premium",
                 title: "New Memberships",
-                value: "48 Active",
-                change: "Platinum",
+                value: metrics.memberships,
+                change: "Active Subscriptions",
                 iconClass: "text-secondary bg-secondary-fixed",
                 changeClass: "text-on-surface-variant",
               },
@@ -252,7 +268,7 @@ export default function Dashboard() {
                 id: 4,
                 icon: "analytics",
                 title: "Booking Value",
-                value: "$168.00",
+                value: metrics.avgValue,
                 change: "Avg Value",
                 iconClass: "text-primary bg-primary-fixed",
                 changeClass: "text-on-surface-variant",

@@ -6,6 +6,7 @@ import { SERVICES_DATA } from "../data/services";
 import LuxuryBadge from "../components/ui/LuxuryBadge";
 import GlassInfoCard from "../components/ui/GlassInfoCard";
 import { authService } from "../services/authService";
+import { bookingService } from "../services/bookingService";
 
 export default function CalendarBooking() {
   const { serviceId } = useParams();
@@ -103,11 +104,8 @@ export default function CalendarBooking() {
       const savedBooking = await Promise.race([apiCall, timeoutCall]);
       console.log("[Booking Flow] API call successful", savedBooking);
 
-      console.log("[Booking Flow] Database write: Saving to localStorage");
-      const user = authService.getCurrentUser();
-      const storageKey = user ? `luxebook_reservations_${user.id}` : "luxebook_reservations";
-      const existingBookings = JSON.parse(localStorage.getItem(storageKey) || "[]");
-      localStorage.setItem(storageKey, JSON.stringify([savedBooking, ...existingBookings]));
+      console.log("[Booking Flow] Database write: Saving to Supabase");
+      await bookingService.createBooking(newBooking);
       console.log("[Booking Flow] Database write successful");
 
       console.log("[Booking Flow] Success callback: Executing navigation");

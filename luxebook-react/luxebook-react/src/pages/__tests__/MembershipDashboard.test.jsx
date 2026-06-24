@@ -5,13 +5,15 @@ import MembershipDashboard from '../MembershipDashboard';
 import { AuthProvider } from '../../contexts/AuthContext';
 import { vi, describe, test, expect } from 'vitest';
 
-// Mock the services
 vi.mock('../../services/membershipService', () => ({
   membershipService: {
     getActiveMembership: vi.fn(() => ({
       name: 'Signature Club',
       activatedAt: new Date().toISOString(),
       expiresAt: new Date(new Date().getTime() + 1000 * 3600 * 24 * 30).toISOString()
+    })),
+    syncActiveMembership: vi.fn(() => Promise.resolve({
+      name: 'Signature Club'
     }))
   }
 }));
