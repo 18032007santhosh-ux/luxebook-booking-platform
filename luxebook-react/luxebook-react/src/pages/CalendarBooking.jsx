@@ -18,12 +18,13 @@ export default function CalendarBooking() {
 
   // Read passed state
   const passedState = location.state || {};
-  const initialDate = passedState.selectedDate ? new Date(passedState.selectedDate) : new Date(2024, 9, 4); // Default to Oct 4, 2024 if not passed
+  const initialDate = passedState.selectedDate ? new Date(passedState.selectedDate) : new Date(); // Default to current date if not passed
   const initialStep = passedState.selectedDate ? 2 : 1;
 
   // Wizard State
   const [step, setStep] = useState(initialStep);
   const [selectedDate, setSelectedDate] = useState(initialDate);
+  const [viewDate, setViewDate] = useState(initialDate);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [guestDetails, setGuestDetails] = useState({ name: "", email: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -219,13 +220,19 @@ export default function CalendarBooking() {
                     <div className="flex justify-between items-center mb-lg">
                       <h2 className="font-headline-lg text-primary text-2xl">Select Date</h2>
                       <div className="flex gap-2">
-                        <button className="w-10 h-10 rounded-full border border-secondary/20 flex items-center justify-center text-primary hover:bg-secondary/5 transition-colors">
+                        <button 
+                          onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))}
+                          className="w-10 h-10 rounded-full border border-secondary/20 flex items-center justify-center text-primary hover:bg-secondary/5 transition-colors"
+                        >
                           <span className="material-symbols-outlined">chevron_left</span>
                         </button>
-                        <h3 className="font-headline-md text-primary flex items-center px-4">
-                          {selectedDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+                        <h3 className="font-headline-md text-primary flex items-center px-4 min-w-[150px] justify-center">
+                          {viewDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
                         </h3>
-                        <button className="w-10 h-10 rounded-full border border-secondary/20 flex items-center justify-center text-primary hover:bg-secondary/5 transition-colors">
+                        <button 
+                          onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))}
+                          className="w-10 h-10 rounded-full border border-secondary/20 flex items-center justify-center text-primary hover:bg-secondary/5 transition-colors"
+                        >
                           <span className="material-symbols-outlined">chevron_right</span>
                         </button>
                       </div>
@@ -238,17 +245,28 @@ export default function CalendarBooking() {
                     </div>
                     
                     <div className="grid grid-cols-7 gap-y-6 gap-x-2 flex-1 items-start">
-                      <div className="p-2 text-on-surface-variant/30 flex justify-center py-4">29</div>
-                      <div className="p-2 text-on-surface-variant/30 flex justify-center py-4">30</div>
+                      {/* Leading days from previous month */}
+                      {[...Array(new Date(viewDate.getFullYear(), viewDate.getMonth(), 1).getDay())].map((_, idx, arr) => {
+                        const prevMonthDays = new Date(viewDate.getFullYear(), viewDate.getMonth(), 0).getDate();
+                        const day = prevMonthDays - arr.length + idx + 1;
+                        return (
+                          <div key={`prev-${day}`} className="p-2 text-on-surface-variant/30 flex justify-center py-4 text-sm font-medium">
+                            {day}
+                          </div>
+                        );
+                      })}
                       
-                      {[...Array(31)].map((_, index) => {
+                      {/* Current month days */}
+                      {[...Array(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate())].map((_, index) => {
                         const day = index + 1;
                         const isSelectable = day % 4 !== 0; // Simulate some unavailable days
-                        const isSelected = selectedDate.getDate() === day;
+                        const isSelected = selectedDate.getDate() === day && 
+                                           selectedDate.getMonth() === viewDate.getMonth() && 
+                                           selectedDate.getFullYear() === viewDate.getFullYear();
                         return (
                           <div 
                             key={day}
-                            onClick={() => isSelectable && setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), day))}
+                            onClick={() => isSelectable && setSelectedDate(new Date(viewDate.getFullYear(), viewDate.getMonth(), day))}
                             className={`flex flex-col items-center justify-center w-12 h-12 mx-auto rounded-full cursor-pointer transition-all duration-300 relative group
                               ${!isSelectable ? "text-on-surface-variant/30 cursor-not-allowed" : "hover:bg-primary/5"}
                               ${isSelected ? "bg-primary text-white shadow-lg scale-110 hover:bg-primary" : "text-on-surface"}
